@@ -1,0 +1,61 @@
+
+@font-face {
+    font-family: 'KalamehWeb_Bold';
+    src: url('~@/assets/fonts/KalamehWeb_Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'KalamehWeb_Regular';
+    src: url('~@/assets/fonts/KalamehWeb_Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'KalamehWeb_Black';
+    src: url('~@/assets/fonts/KalamehWeb_Black.ttf') format('truetype');
+}
+
+/*
+===========================
+Reset
+===========================
+*/
+:root {
+    --primaryColor: #f1f1f1;
+    --black: #222;
+    --black2: #555;
+    --black3: #252525;
+    --black4: #000;
+    --black5: #212529;
+    --orange: #eb0028;
+    --white: #fff;
+    --gray: #959595;
+    --gray2: #666;
+    --gray3: #ccc;
+    --secondaryColor: #2b1f4d;
+    --yellow: #ffcc00;
+    --green: #59b210;
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 5px grey; */
+    border: 1px solid var(--primaryColor);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--orange);
+}

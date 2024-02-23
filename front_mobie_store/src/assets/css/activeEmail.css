@@ -1,0 +1,19 @@
+@import url("~@/assets/css/root.css");
+
+
+.activeEmail{
+    width: 100%;
+    height: 25rem;
+}
+
+.activeEmail p{
+    font-family: KalamehWeb_Bold;
+    font-size: 22px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}

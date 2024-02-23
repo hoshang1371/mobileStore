@@ -1,0 +1,413 @@
+.cantaner_center {
+    width: 100%;
+    display: flex;
+    height: auto;
+    flex-direction: row-reverse;
+}
+
+.cantainer_left {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1%;
+}
+
+.cantainer_left .image_list {
+    display: flex;
+    margin: 8rem 1rem 1rem 1rem;
+    overflow-x: scroll;
+    padding-bottom: 10%;
+    /* overflow-y: scroll; */
+}
+
+
+
+
+
+.cantainer_left .image_list img{
+    width: calc(25% - 0.2rem);
+    position: relative;
+    object-fit: contain;
+    /* margin-right: calc(1rem / 4);
+    right: calc(1rem / 4); */
+
+}
+
+.cantainer_left .image_list img:not(:last-child){
+    /* background-color: red; */
+    margin-right: .25rem;
+
+
+}
+
+.cantainer_left picture:first-child img {
+    max-width: 100% !important;
+    /* background-color: red; */
+}
+
+.cantainer_left picture:nth-child(2) img {
+    max-width: none !important;
+    background-color: green;
+}
+
+.cantainer_left .vh--message {
+    font-family: KalamehWeb_Bold;
+}
+
+.cantainer_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 55%;
+    padding: 5%;
+    height: 100%;
+}
+
+.product__price_kh {
+    text-decoration: line-through;
+    color: var(--orange);
+    margin-top: 2rem;
+}
+
+.product__price h4:last-child {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+.product__price h4:first-child {
+    margin-top: 2rem;
+}
+
+.cantainer_right span {
+    margin-top: 2rem;
+    text-align: right;
+    direction: rtl;
+    font-family: KalamehWeb_Regular;
+}
+
+.cantainer_right h1 {
+    font-family: KalamehWeb_Bold;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.cantainer_right h3 {
+    text-align: center;
+}
+
+.AddToCart {
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 62px;
+    background-color: var(--black);
+    /* border-radius: 3px; */
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    -moz-transition: all .4s;
+    transition: all .4s;
+    font-family: KalamehWeb_Bold;
+    margin-top: 4rem;
+}
+
+.AddToCart:hover {
+    font-weight: 700;
+    background-color: transparent;
+    color: var(--black);
+}
+
+/** number*/
+
+.numberOfProduct .number {
+    display: flex;
+    justify-content: center;
+    /* position: absolute; */
+    /* top: 20%;
+    left: 50%; */
+    width: 17vh;
+    height: 7vh;
+    /* transform: translate(-50%, -50%); */
+    transform: translateX(4%);
+    border: 1px solid var(--primaryColor);
+    border-radius: 0px;
+}
+
+.numberOfProduct .number input {
+    /* position: absolute; */
+    border: none;
+    top: 50%;
+    left: 0;
+    width: 69%;
+    z-index: -2;
+    outline: none;
+    font-family: "samim";
+    padding-left: 5%;
+    font-size: 150%;
+    /* transform: translateY(-50%); */
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.numberOfProduct .number::before {
+    content: '';
+    height: 1px;
+    width: 2rem;
+    background-color: var(--primaryColor);
+    position: absolute;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    /* position: relative; */
+    right: 0;
+}
+
+.numberOfProduct .number::after {
+    content: '';
+    height: 6.8vh;
+    width: 1px;
+    background-color: var(--primaryColor);
+    /* transform: translateX(-2rem); */
+    position: absolute;
+    right: 2rem;
+    /* position: relative; */
+}
+
+.numberOfProduct .number .up {
+    position: absolute;
+    right: 0rem;
+    height: 100%;
+    width: 2rem;
+}
+
+.numberOfProduct .number .up .BCdown,
+.numberOfProduct .number .up .BCup {
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray);
+}
+
+.numberOfProduct .number .up .BCdown:hover,
+.numberOfProduct .number .up .BCup:hover {
+    background-color: var(--orange);
+}
+
+#numberProduct {
+    font-family: KalamehWeb_Regular;
+    text-align: center;
+}
+
+.likes {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.likes svg {
+    height: 1.5rem;
+    width: 2.5rem;
+    margin-bottom: 6px;
+}
+
+.likesHover svg:hover {
+    fill: var(--orange);
+}
+
+.liked svg {
+    fill: var(--orange);
+}
+
+.likes span {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    text-align: center;
+    margin-top: 0 !important;
+}
+
+.cantainer_comment {
+    width: 100%;
+    /*! hazv shavad  */
+    /* height: 50rem; */
+}
+
+.dotC {
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.comment_section {
+    direction: rtl;
+    margin: 7rem 5rem;
+    /* font-weight: 500; */
+    /* font-family: KalamehWeb_Bold; */
+}
+
+.dot {
+    cursor: auto !important;
+}
+
+.comment_section .commented-user h5 {
+    font-weight: 500;
+    font-size: 2rem;
+    font-family: KalamehWeb_Bold;
+    margin-left: 1rem;
+}
+
+/* .comment_section .commented-user span:last-child  */
+.comment_section .commented-user div span
+{
+    font-family: KalamehWeb_Regular;
+    margin-right: 0.5rem;
+    color: var(--gray);
+}
+/* start .cantainer_comment .cantainer_comment_down scroll */
+.cantainer_comment .cantainer_comment_down::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.cantainer_comment .cantainer_comment_down::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 5px grey; */
+    border: 1px solid var(--primaryColor);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+/* Handle */
+.cantainer_comment .cantainer_comment_down::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.cantainer_comment .cantainer_comment_down::-webkit-scrollbar-thumb:hover {
+    background: #b30000;
+}
+/* end of .cantainer_comment .cantainer_comment_down scroll */
+.cantainer_comment .cantainer_comment_down {
+    height: 40rem;
+    overflow-y: scroll; 
+    margin: 2rem;
+}
+
+
+.cantainer_comment .cantainer_comment_down .comment_section .commented-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mr-1 {
+    margin-right: 1rem;
+}
+
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons {
+    direction: rtl;
+    margin-top: 2rem;
+}
+
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons h6 {
+    font-family: KalamehWeb_Bold;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.cantainer_comment .cantainer_comment_down .comment_section .comment-text-sm {
+    font-family: KalamehWeb_Regular;
+
+}
+
+
+.cantainer_comment .cantainer_comment_up {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.cantainer_comment .cantainer_comment_up .add-comment-section {
+    display: flex;
+    justify-content: end;
+    /* justify-content: flex-end; */
+    align-items: center;
+    flex-direction: row-reverse;
+    font-family: KalamehWeb_Bold;
+    width: 100%;
+    margin: 0 5rem;
+}
+
+.cantainer_comment .cantainer_comment_up .add-comment-section button {
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    height: 30px;
+    background-color: var(--black);
+    transition: all .4s;
+    font-family: KalamehWeb_Bold;
+}
+
+.cantainer_comment .cantainer_comment_up .add-comment-section button:hover {
+    font-weight: 700;
+    background-color: transparent;
+    color: var(--black);
+}
+
+.cantainer_comment .cantainer_comment_up .add-comment-section input {
+    border: 1px solid var(--primaryColor);
+    border-radius: 0px;
+    margin: 0 1rem;
+    direction: rtl;
+    font-family: KalamehWeb_Bold;
+    height: 5vh;
+    width: 35rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .cantaner_center {
+        flex-direction: column;
+    }
+
+    .cantainer_left,
+    .cantainer_right {
+        width: 100%;
+    }
+
+}
