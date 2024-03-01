@@ -323,6 +323,10 @@ input::-webkit-inner-spin-button {
     align-items: center;
     margin-bottom: 1rem;
 }
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons svg{
+    cursor: pointer;
+}
+
 
 .cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons {
     display: flex;
@@ -343,11 +347,23 @@ input::-webkit-inner-spin-button {
     font-family: KalamehWeb_Bold;
     font-size: 1.5rem;
     margin-right: 1rem;
+    cursor: pointer;
 }
 
-.cantainer_comment .cantainer_comment_down .comment_section .comment-text-sm {
-    font-family: KalamehWeb_Regular;
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons .removeComment{
+    /* left: 0; */
+    position: relative;
+    margin-right: 25%;
+}
 
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section .voting-icons h6:hover{
+    color: var(--orange);
+}
+
+.cantainer_comment .cantainer_comment_down .comment_section .comment-text-sm,
+.cantainer_comment .cantainer_comment_down .comment_section .reply-section
+{
+    font-family: KalamehWeb_Regular;
 }
 
 

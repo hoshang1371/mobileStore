@@ -3,17 +3,13 @@
         <div class="cantainer_left">
             <!-- <img src="../assets/images/products/eniko-kis-KsLPTsYaqIQ-unsplash.jpg" alt=""> -->
             <!-- <img :src="productDetais.get_image" alt=""> -->
-            <vue-image-zoomer :regular="this.originalImg" :zoom="this.originalImg" img-class="img-fluid"
-                alt="Product" hover-message="ذره بین" touch-message="ذره بین" close-pos="top-right" message-pos="top" />
+            <vue-image-zoomer :regular="this.originalImg" :zoom="this.originalImg" img-class="img-fluid" alt="Product"
+                hover-message="ذره بین" touch-message="ذره بین" close-pos="top-right" message-pos="top" />
             <!-- <vue-image-zoomer :regular="productDetais.get_image" :zoom="productDetais.get_image" img-class="img-fluid"
                 alt="Product" hover-message="ذره بین" touch-message="ذره بین" close-pos="top-right" message-pos="top" /> -->
             <div class="image_list">
-                <img 
-                v-for="ProductGallery in ProductGallerys" 
-                :src="ProductGallery.image" 
-                :alt="ProductGallery.title" 
-                @click="setImage(ProductGallery.image)"
-                />
+                <img v-for="ProductGallery in ProductGallerys" :src="ProductGallery.image" :alt="ProductGallery.title"
+                    @click="setImage(ProductGallery.image)" />
             </div>
         </div>
         <div class="cantainer_right">
@@ -26,8 +22,8 @@
                         'active': star <= stars,
                         'deactive': star > stars
                     }" @click="$store.state.isAuthenticated ? postStar(star) : ''" :style="[
-                    $store.state.isAuthenticated ? { 'cursor': 'pointer' } : '',
-                    ]">
+    $store.state.isAuthenticated ? { 'cursor': 'pointer' } : '',
+]">
                     <g>
                         <polygon fill-rule="evenodd" clip-rule="evenodd"
                             points="61.44,0 78.351,41.326 122.88,44.638 88.803,73.491 99.412,116.864 61.44,93.371 23.468,116.864 34.078,73.491 0,44.638 44.529,41.326 61.44,0"
@@ -94,7 +90,7 @@
 
         <div class="cantainer_comment_down">
 
-<!-- 
+            <!-- 
             <div class="comment_section">
                 <div class="commented-user">
                     <h5 class="">دانیال</h5>
@@ -121,11 +117,7 @@
                 </div>
 
             </div> -->
-
- 
-
-            کیر خر
-            <commentSection v-for="comment in comments" v-bind:key="comment.id" v-bind:comment="comment" />
+            <commentSection @remove="removeItem(index)" v-for="(comment, index) in comments" v-bind:key="comment.id" v-bind:comment="comment" />
 
 
 
@@ -165,7 +157,7 @@ export default {
             starsF: 0.0,
             likes: "",
             boolLike: false,
-            originalImg:"",
+            originalImg: "",
             comments: [],
         }
     },
@@ -187,6 +179,7 @@ export default {
         this.getLike()
         this.getProductGallery()
         this.getComments()
+        // this.getLikesCustomerComment()
         // console.log(axios.defaults.headers.common['Authorization'])
         // window.scroll(0, 0);
         // const product_id = this.$route.params.product_id
@@ -265,6 +258,10 @@ export default {
         async getComments() {
             const product_id = this.$route.params.product_id
             const product_title = this.$route.params.product_title
+
+            // setTimeout(() => {
+            //     source.cancel();
+            // }, 30000);
             await axios
                 // .get(`api/v1/products/${product_id}/${product_title}`) productDetais.get_image
                 .get(`/api/v1/GetCustomerComment/${product_id}`)
@@ -297,6 +294,16 @@ export default {
                     this.likes = this.toPersinaDigit(response.data["numberLike"].toString())
                 })
         },
+
+        // async getLikesCustomerComment() {
+        //     const product_id = this.$route.params.product_id
+        //     await axios
+        //         .get(`/api/v1/GetLikesCustomerComment/${product_id}`)
+        //         .then(response => {
+        //             console.log(response.data)
+        //         })
+        // },
+
         async getProductGallery() {
             const product_id = this.$route.params.product_id
             await axios
@@ -306,7 +313,7 @@ export default {
                 })
         },
 
-        setImage(img){
+        setImage(img) {
             console.log(img)
             this.originalImg = img
         },
@@ -326,9 +333,15 @@ export default {
                 })
             // console.log("starId", (starId))
         },
+
+        removeItem(index){
+            this.comments.splice(index,1);
+        }
     },
 }
 
 </script>
 
-<style>@import "@/assets/css/ProductDetails.css"</style>
+<style>
+@import "@/assets/css/ProductDetails.css"
+</style>
