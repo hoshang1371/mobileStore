@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 
 from rest_framework.views import APIView
-from .models import CustomerComment, Product, ProductGallery,Rating,Likes
-from .serializers import CustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductSerializer,StarSerializer,LikeSerializer
+from .models import CustomerComment, Product, ProductGallery,Rating,Likes, LikesCustomerComment
+from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductSerializer,StarSerializer,LikeSerializer
 from rest_framework.response import Response
 from django.db.models import Q
 from django.http import Http404
@@ -11,6 +11,7 @@ from django.http import Http404
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, authentication, permissions
 from django.db.models import Avg
+import convert_numbers
 
 # Create your views here.
 # def index(request: HttpRequest) -> HttpResponse:
@@ -20,8 +21,9 @@ from django.db.models import Avg
 #         post.user_rating = rating.rating if rating else 0 
 #     return render(request, "index.html", {"posts": posts})
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.generics import ListAPIView,ListCreateAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,ListCreateAPIView,RetrieveAPIView,DestroyAPIView
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class LatestProductsList(APIView):
@@ -133,8 +135,31 @@ class SetStarClass(ListCreateAPIView):
             })
     
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+#TODO: change ListCreateAPIView
+class LikesCustomerCommentClass(ListCreateAPIView):
+    queryset = LikesCustomerComment.objects.all()
+    serializer_class = LikesCustomerCommentSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request,CustomerComment_id, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        if LikesCustomerComment.objects.filter(user=user,CustomerComment_id=CustomerComment_id).exists():
+            likC = LikesCustomerComment.objects.filter(user=user,CustomerComment_id=CustomerComment_id).first()
+
+        else:
+            likC = LikesCustomerComment.objects.create(user=user,CustomerComment_id=CustomerComment_id)
+
+        likC.likes = not likC.likes
+        likC.save()
+        numberLikeC = LikesCustomerComment.objects.filter(CustomerComment_id=CustomerComment_id,likes=True)
+        return Response({
+            "like" : likC.likes,
+            "numberLike": convert_numbers.english_to_persian(str(numberLikeC.count()))
+        })
     
+
+    
+
 class LikeStarClass(ListCreateAPIView):
     queryset = Likes.objects.all()
     serializer_class = LikeSerializer
@@ -143,15 +168,15 @@ class LikeStarClass(ListCreateAPIView):
 
     def get(self, request,product_id, *args, **kwargs):
         # print("product_id=",product_id)
-        print("request.auth=",request.auth)
+        # print("request.auth=",request.auth)
         if request.auth is not None:
             user = Token.objects.get(pk=request.auth).user
-            print("user=",user)
+            # print("user=",user)
             if Likes.objects.filter(user=user,product_id=product_id).exists():
                 lik = Likes.objects.filter(user=user,product_id=product_id).first()
             else:
                 lik = Likes.objects.create(user=user,product_id=product_id,likes=False)
-            print("lik=",lik)
+            # print("lik=",lik)
             likeBool = lik.likes
 
         else:
@@ -169,8 +194,8 @@ class LikeStarClass(ListCreateAPIView):
         user = Token.objects.get(pk=request.auth).user
         if Likes.objects.filter(user=user,product_id=request.data["product"]).exists():
             lik = Likes.objects.filter(user=user,product_id=request.data["product"]).first()
-            print("lik=",lik)
-            print("lik.likes=",lik.likes)
+            # print("lik=",lik)
+            # print("lik.likes=",lik.likes)
         else:
             lik = Likes.objects.create(user=user,product_id=request.data["product"])
         lik.likes = not lik.likes
@@ -187,7 +212,43 @@ class CustomerCommentClass(ListCreateAPIView):
     serializer_class = CustomerCommentSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+
+    def getId(self,serial,usr=None):
+        # print("!!!!!!!!!!!!!!")
+        # print(serial["id"])
+        # print(usr)
+
+        serial['is_user'] = False
+        if usr is not None:
+            if usr.username == serial['user']:
+                serial['is_user'] = True
+
+
+
+        serial['is_liked'] = False
+        if LikesCustomerComment.objects.filter(
+            user=usr,
+            CustomerComment_id=serial["id"],
+            likes= True
+            ).exists():
+                # print("-------------")
+                # print(serial["id"])
+                serial['is_liked'] = True
+                # boolLike= LikesCustomerComment.objects.filter(
+                #     user=usr,
+                #     # pk=serial["id"],
+                #     CustomerComment_id=serial["id"],
+                #     likes= True   
+                #     ).first()
+                # print(f"boolLike.id={boolLike.id}")
+                # print(f"boolLike.user={boolLike.user}")
+        # else:
+        #     serial['is_liked'] = False
+        if serial["replies"] != []:
+            self.getId(serial["replies"][0],usr)
+
     def get(self, request,product_id, *args, **kwargs):
+
 
         # comments = CustomerComment.objects.filter(CommentProduct=product_id,is_ok=True)
         # comments = CustomerComment.objects.get(CommentProduct=product_id,is_ok=True) .order_by('-created')
@@ -197,11 +258,40 @@ class CustomerCommentClass(ListCreateAPIView):
             is_ok=True,
             parent=None,
             # replies=None,
-            )
+            ).order_by('-created')
         serializer = CustomerCommentSerializer(comments, many=True)
+
+
+        if request.auth is not None:
+            user = Token.objects.get(pk=request.auth).user
+            print(user)
+        else:
+            user = None
+
+        for serial in serializer.data:
+            self.getId(serial,usr=user)
         return Response(serializer.data)
 
 
+#DeleteCustomerCommentSerializer
+class DeleteCustomerComment(DestroyAPIView):
+    queryset = CustomerComment.objects.all()
+    serializer_class = DeleteCustomerCommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    # def get_queryset(self):
+    #     queryset = Category.objects.filter(company = self.request.user.currently_activated_company, id=self.kwargs['pk'])
+    #     return queryset
 
 
+    # def destroy(self, request, *args, **kwargs):
+    #     # instance = self.get_object()
+    #     # if instance.is_default == True:
+    #     #     return Response("Cannot delete default system category", status=status.HTTP_400_BAD_REQUEST)
+    #     # self.perform_destroy(instance)
+    #     # comments = CustomerComment.objects.get_queryset().filter(
+    #     #     is_ok=True,
+    #     #     ).order_by('-created')
+    #     # serializer = CustomerCommentSerializer(comments, many=True)
+    #     return Response({"delete": "ok"})
 

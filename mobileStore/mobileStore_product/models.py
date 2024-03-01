@@ -250,10 +250,18 @@ class CustomerComment(models.Model):
     #                        null=True, blank=True)
 
     def time_calc(self):
-        # TODO be farsi tabdil shavad
         now = jdatetime.datetime.utcnow().replace(tzinfo=pytz.timezone('Asia/Tehran')) 
+        return getDuration(self.updated, now)
 
-        # return f"{now-self.updated}".replace("days", "روز") split(',')
+    def like_comment_calc(self):
+        numberLikeC =LikesCustomerComment.objects.filter(CustomerComment_id=self.id,CustomerComment__CommentProduct_id=self.CommentProduct.id,likes=True).count()
+        return(convert_numbers.english_to_persian(str(int(numberLikeC))))
+    
+    def is_liked(self):
+        isLiked =LikesCustomerComment.objects.filter(CustomerComment_id=self.id,CustomerComment__CommentProduct_id=self.CommentProduct.id,likes=True).count()
+        return(convert_numbers.english_to_persian(str(int(isLiked))))
+    
+        # return f"{now-self.updated}".replace("days", "روز")
 
         # Date = str(now-self.updated).split('.')
         # Date =Date[0].split(',')
@@ -266,9 +274,6 @@ class CustomerComment(models.Model):
 
         # print(getDuration(self.updated, now))
 
-        # return f"{now-self.updated}"
-        return getDuration(self.updated, now)
-        # return convert_numbers.english_to_persian(str(now-self.updated))
     
     class Meta:
         verbose_name = ' نظرات کاربران '
@@ -279,9 +284,15 @@ class CustomerComment(models.Model):
     
 
 class LikesCustomerComment(models.Model):
+    # TODO: nyazi be user nadare
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     CustomerComment = models.ForeignKey(CustomerComment, on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE) CommentProduct
     likes = models.BooleanField(default=False)
+
+
+    # def like_comment_calc(self):
+    #     return("koko")
     
     class Meta:
         unique_together = ('user', 'CustomerComment',)

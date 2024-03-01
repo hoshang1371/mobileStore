@@ -4,7 +4,7 @@ from rest_framework.serializers import PrimaryKeyRelatedField
 
 import convert_numbers
 
-from .models import CustomerComment, Product, ProductGallery,Rating,Likes
+from .models import CustomerComment, LikesCustomerComment, Product, ProductGallery,Rating,Likes
 
 class StarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,6 +15,12 @@ class StarSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Likes
+        fields = '__all__'
+
+
+class LikesCustomerCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LikesCustomerComment
         fields = '__all__'
 
 
@@ -49,10 +55,23 @@ class ProductSerializer(serializers.ModelSerializer):
         return representation
     
     
+class DeleteCustomerCommentSerializer(serializers.ModelSerializer):
+    model = CustomerComment
+
+    fields = (
+        "id",
+        )
+
+
+
+
+
 class CustomerCommentSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source="user.username", read_only=True)
     class Meta:
         time_calc = serializers.CharField(source='time_calc')
+        like_comment_calc = serializers.CharField(source='like_comment_calc')
+        # is_liked = serializers.CharField(source='is_liked')
         model = CustomerComment
         fields = (
             "id",
@@ -61,9 +80,10 @@ class CustomerCommentSerializer(serializers.ModelSerializer):
             "created",
             "updated",
             "time_calc",
+            "like_comment_calc",
+            # "is_liked",
             "parent",
             "replies",
-            # 'sub_category'
         )
         # depth = 1
         # fields = '__all__'

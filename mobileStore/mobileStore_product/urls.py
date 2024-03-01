@@ -13,6 +13,8 @@ urlpatterns = [
     path('SetStar/',views.SetStar),
     path('SetStarClass/',views.SetStarClass.as_view()),
     path('GetLikeClass/<slug:product_id>',views.LikeStarClass.as_view()),
+    path('GetLikesCustomerComment/<slug:CustomerComment_id>',views.LikesCustomerCommentClass.as_view()),
     path('GetProductDetailProductGallery/<slug:product_id>',views.ProductDetailProductGallery.as_view()),
     path('GetCustomerComment/<slug:product_id>',views.CustomerCommentClass.as_view()),
+    path('DeleteCustomerComment/<int:pk>/',views.DeleteCustomerComment.as_view()),
     ]
