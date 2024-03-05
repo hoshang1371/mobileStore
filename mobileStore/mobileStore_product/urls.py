@@ -17,4 +17,5 @@ urlpatterns = [
     path('GetProductDetailProductGallery/<slug:product_id>',views.ProductDetailProductGallery.as_view()),
     path('GetCustomerComment/<slug:product_id>',views.CustomerCommentClass.as_view()),
     path('DeleteCustomerComment/<int:pk>/',views.DeleteCustomerComment.as_view()),
+    path('PostCustomerComment/',views.PostCustomerComment.as_view()),
     ]

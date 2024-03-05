@@ -57,7 +57,6 @@ class ProductSerializer(serializers.ModelSerializer):
     
 class DeleteCustomerCommentSerializer(serializers.ModelSerializer):
     model = CustomerComment
-
     fields = (
         "id",
         )
@@ -92,3 +91,12 @@ class CustomerCommentSerializer(serializers.ModelSerializer):
         fields = super(CustomerCommentSerializer, self).get_fields()
         fields['replies'] = CustomerCommentSerializer(many=True, read_only=True)
         return fields
+    
+
+class PostCustomerCommentSerializer(serializers.ModelSerializer):
+    model = CustomerComment
+    fields = (
+        "user",
+        "text",
+        "CommentProduct",
+        )

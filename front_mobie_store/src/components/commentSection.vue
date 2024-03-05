@@ -32,12 +32,15 @@
                 </svg>
                 <span class="mr-1">{{ comment.like_comment_calc }}</span>
                 <span class="dot mr-1"></span>
-                <h6 class="">پاسخ</h6>
+                <h6 class="" @click="toggleCustomerComment()">پاسخ</h6>
 
                 <!-- TODO: add remove for user -->
                 <h6 class="removeComment" v-if="comment.is_user" @click="removeComment(comment.id)">حذف</h6>
             </div>
         </div>
+
+        <customerComentPost v-if="showCommentPost == true" v-bind:key="comment.id" v-bind:customerComment="comment" />
+
         <commentSection @remove="removeItem(index)" v-if="comment.replies.length != 0" v-for="(comment, index) in comment.replies" v-bind:key="comment.id"
             v-bind:comment="comment" />
 
@@ -50,10 +53,20 @@
 
 import axios from 'axios';
 
+import customerComentPost from '@/components/customerComentPost.vue'
+
 export default {
     name: 'commentSection',
+    components: {
+        customerComentPost,
+    },
     props: {
         comment: Object,
+    },
+    data() {
+        return {
+            showCommentPost : false,
+        }
     },
     mounted() {
         // this.setComment()
@@ -88,9 +101,7 @@ export default {
         },
 
         async removeComment(id) {
-            console.log(id)
-
-            
+            // console.log(id)
             this.$store.commit('setIsLoading', true)
 
             await axios
@@ -109,6 +120,13 @@ export default {
         removeItem(index){
 
             this.comment.replies.splice(index,1);
+        },
+
+        toggleCustomerComment()
+        {
+            // console.log(this.comment.id)   
+            this.showCommentPost = !this.showCommentPost;
+
         }
         // setComment() {
         //     // console.log(this.comment.replies.length)

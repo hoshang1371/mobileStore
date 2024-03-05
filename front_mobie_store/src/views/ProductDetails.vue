@@ -126,8 +126,8 @@
 
         <div class="cantainer_comment_up">
             <div class="add-comment-section">
-                <input type="text" class="form-control mr-3" placeholder="افزودن نظر">
-                <button class="btn btn-primary" type="button">ارسال</button>
+                <input  v-model="message" type="text" class="form-control mr-3" placeholder="افزودن نظر">
+                <button @click="postComment()"  class="btn btn-primary" type="button">ارسال</button>
             </div>
         </div>
     </div>
@@ -141,6 +141,10 @@ import 'vue-image-zoomer/dist/style.css';
 
 
 import commentSection from '@/components/commentSection.vue'
+
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification()
 
 export default {
     name: "ProductDetails",
@@ -159,6 +163,7 @@ export default {
             boolLike: false,
             originalImg: "",
             comments: [],
+            message: "",
         }
     },
     mounted() {
@@ -336,6 +341,27 @@ export default {
 
         removeItem(index){
             this.comments.splice(index,1);
+        },
+
+        async postComment(){
+
+            this.$store.commit('setIsLoading', true)
+            const formData = {
+                product: this.productDetais.id,
+                text : this.message,
+                parent : null
+            }
+            await axios
+                .post("/api/v1/PostCustomerComment/", formData)
+                .then(response => {
+                    notify({
+                            title: "نظر شما با موفقیت ثبت شد پش از بررسی اعمال خواهد شد",
+                            type: "success",
+                            });
+                    this.$store.commit('setIsLoading', false)
+                    this.message = "";
+                })
+                this.$store.commit('setIsLoading', false)
         }
     },
 }

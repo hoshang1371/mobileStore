@@ -284,7 +284,6 @@ class CustomerComment(models.Model):
     
 
 class LikesCustomerComment(models.Model):
-    # TODO: nyazi be user nadare
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     CustomerComment = models.ForeignKey(CustomerComment, on_delete=models.CASCADE)
     # product = models.ForeignKey(Product, on_delete=models.CASCADE) CommentProduct

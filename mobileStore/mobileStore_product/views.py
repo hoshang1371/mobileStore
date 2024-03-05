@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from .models import CustomerComment, Product, ProductGallery,Rating,Likes, LikesCustomerComment
-from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductSerializer,StarSerializer,LikeSerializer
+from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, PostCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductSerializer,StarSerializer,LikeSerializer
 from rest_framework.response import Response
 from django.db.models import Q
 from django.http import Http404
@@ -21,7 +21,7 @@ import convert_numbers
 #         post.user_rating = rating.rating if rating else 0 
 #     return render(request, "index.html", {"posts": posts})
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.generics import ListAPIView,ListCreateAPIView,RetrieveAPIView,DestroyAPIView
+from rest_framework.generics import ListAPIView,ListCreateAPIView,RetrieveAPIView,DestroyAPIView,CreateAPIView
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -273,25 +273,33 @@ class CustomerCommentClass(ListCreateAPIView):
         return Response(serializer.data)
 
 
-#DeleteCustomerCommentSerializer
 class DeleteCustomerComment(DestroyAPIView):
     queryset = CustomerComment.objects.all()
     serializer_class = DeleteCustomerCommentSerializer
     permission_classes = [IsAuthenticated]
 
-    # def get_queryset(self):
-    #     queryset = Category.objects.filter(company = self.request.user.currently_activated_company, id=self.kwargs['pk'])
-    #     return queryset
+class PostCustomerComment(CreateAPIView):   
+    # serializer_class = PostCustomerCommentSerializer
+    serializer_class = CustomerCommentSerializer
+    queryset = CustomerComment.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        print(f"user={user}")
+        print(request.data["text"])
+        print(request.data["product"])
+        print(request.data["parent"])
 
 
-    # def destroy(self, request, *args, **kwargs):
-    #     # instance = self.get_object()
-    #     # if instance.is_default == True:
-    #     #     return Response("Cannot delete default system category", status=status.HTTP_400_BAD_REQUEST)
-    #     # self.perform_destroy(instance)
-    #     # comments = CustomerComment.objects.get_queryset().filter(
-    #     #     is_ok=True,
-    #     #     ).order_by('-created')
-    #     # serializer = CustomerCommentSerializer(comments, many=True)
-    #     return Response({"delete": "ok"})
 
+        comments = CustomerComment.objects.create(
+            user_id= user.pk,
+            CommentProduct_id=request.data["product"],
+            text=request.data["text"],
+            is_ok=False,
+            parent_id=request.data["parent"],
+        )
+        return Response({
+            "ok":"ok"
+        })
