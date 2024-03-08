@@ -32,7 +32,7 @@
                 </svg>
                 <span class="mr-1">{{ comment.like_comment_calc }}</span>
                 <span class="dot mr-1"></span>
-                <h6 class="" @click="toggleCustomerComment()">پاسخ</h6>
+                <h6 class="" @click="$store.state.isAuthenticated ? toggleCustomerComment() : loginCustomerComment()">پاسخ</h6>
 
                 <!-- TODO: add remove for user -->
                 <h6 class="removeComment" v-if="comment.is_user" @click="removeComment(comment.id)">حذف</h6>
@@ -54,7 +54,9 @@
 import axios from 'axios';
 
 import customerComentPost from '@/components/customerComentPost.vue'
+import { useNotification } from "@kyvg/vue3-notification";
 
+const { notify } = useNotification()
 export default {
     name: 'commentSection',
     components: {
@@ -69,6 +71,7 @@ export default {
         }
     },
     mounted() {
+        // console.log(this.comment.id,this.comment.text,this.comment.is_liked)
         // this.setComment()
     },
     setup(props, { root }) {
@@ -111,7 +114,6 @@ export default {
                     console.log(response.status)
 
                     if (response.status == 204) {
-                        console.log("kos nane")
                         this.$emit("remove")
                     }
                     this.$store.commit('setIsLoading', false)
@@ -124,10 +126,15 @@ export default {
 
         toggleCustomerComment()
         {
-            // console.log(this.comment.id)   
             this.showCommentPost = !this.showCommentPost;
+        },
 
-        }
+        loginCustomerComment()
+        {
+            notify({
+                        title: "لطفا وارد حساب کاربری خود شوید",
+                        type: "warn",
+                    });        }
         // setComment() {
         //     // console.log(this.comment.replies.length)
         //     // console.log(typeof(this.comment.replies))

@@ -89,7 +89,12 @@ class Product(models.Model):
     mobile_image_tumpnail = models.ImageField(upload_to= upload_mobile_image_tumpnail_path, null=True, blank=True, verbose_name='تصویر_بند_انگشتی')
     thumbnail = models.ImageField(upload_to='upload/', blank=True, null=True)
     active = models.BooleanField(default=False, verbose_name='فعال / غیرفعال')
-    categories = models.ManyToManyField(ProductCategory, blank =True, verbose_name='دسته بندی ها')
+    categories = models.ManyToManyField(
+        ProductCategory, 
+        # blank =True, 
+        verbose_name='دسته بندی ها',
+        related_name='ralet',
+        )
     visit_count = models.IntegerField(default=0, verbose_name='تعداد بازدید ها')
     vige = models.BooleanField(default=False, verbose_name='ویژه / غیرویژه')
     created = models.DateField(auto_now_add=True)

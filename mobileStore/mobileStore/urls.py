@@ -63,6 +63,7 @@ urlpatterns = [
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.authtoken')),
     path('api/v1/',include('mobileStore_product.urls')),
+    path('api/v1/',include('mobileStore_product_category.urls')),
     path('slider/',include('mobileStoreSlider.urls')),
     path('site__Setting/',include('mobileStore_settings.urls')),
 

@@ -127,7 +127,7 @@
         <div class="cantainer_comment_up">
             <div class="add-comment-section">
                 <input  v-model="message" type="text" class="form-control mr-3" placeholder="افزودن نظر">
-                <button @click="postComment()"  class="btn btn-primary" type="button">ارسال</button>
+                <button @click="$store.state.isAuthenticated ? postComment() : loginCustomerComment()"  class="btn btn-primary" type="button">ارسال</button>
             </div>
         </div>
     </div>
@@ -253,7 +253,7 @@ export default {
                 .then(response => {
                     this.productDetais = response.data
                     this.originalImg = this.productDetais.get_image
-                    // console.log(this.originalImg)
+                    console.log(this.productDetais.categories)
                     this.stars = this.productDetais.int_average_rating
                     this.starsF = this.productDetais.float_average_rating
                 })
@@ -362,7 +362,16 @@ export default {
                     this.message = "";
                 })
                 this.$store.commit('setIsLoading', false)
+        },
+
+        loginCustomerComment()
+        {
+            notify({
+                        title: "لطفا وارد حساب کاربری خود شوید",
+                        type: "warn",
+                    });        
         }
+
     },
 }
 

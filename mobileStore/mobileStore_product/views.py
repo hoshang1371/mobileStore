@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from .models import CustomerComment, Product, ProductGallery,Rating,Likes, LikesCustomerComment
-from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, PostCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductSerializer,StarSerializer,LikeSerializer
+from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, PostCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductDitailSerializer, ProductSerializer,StarSerializer,LikeSerializer
 from rest_framework.response import Response
 from django.db.models import Q
 from django.http import Http404
@@ -57,10 +57,12 @@ class priceOffList(APIView):
         return Response(serializer.data)
     
 class ProductDetail(APIView):
+
     def get_object(self, product_id, product_title):
         try:
             return Product.objects.filter(id=product_id).get(title=product_title)
         except Product.DoesNotExist:
+            #ToDO : beter Template
             raise Http404
         
     # def get(self,request, product_id, product_title, format=None):
@@ -68,7 +70,8 @@ class ProductDetail(APIView):
         # product = self.get_object(product_title, product_title)
         # product = Product.objects.filter(id=product_id)[0]
         product = Product.objects.filter(id=product_id)[0]
-        serializer = ProductSerializer(product)
+        # serializer = ProductSerializer(product)
+        serializer = ProductDitailSerializer(product)
         return Response(serializer.data)
     
 
