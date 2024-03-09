@@ -145,7 +145,7 @@ class ProductDitailSerializer(serializers.ModelSerializer):
         cat = representation['categories'][0]
 
         categories= self.get_parnt_category(cat,categ=[])
-        print(f'categories={categories}')
+        # print(f'categories={categories}')
         representation['categories'] = categories
         return representation
     

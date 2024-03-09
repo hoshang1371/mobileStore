@@ -397,6 +397,7 @@ input::-webkit-inner-spin-button {
     margin:5rem;
 }
 
+
 .cantainer_comment .cantainer_comment_up .add-comment-section button,
 .add-comment-section button {
     font-size: 16px;
@@ -429,6 +430,28 @@ input::-webkit-inner-spin-button {
     font-family: KalamehWeb_Bold;
     height: 5vh;
     width: 35rem;
+}
+
+
+/* category */
+
+.category{
+    margin-bottom: 1rem;
+}
+
+.category,
+.category div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+}
+
+.category div a,
+.category div p
+{
+    font-family: KalamehWeb_Bold;
+    color: var(--gray);
 }
 
 @media only screen and (max-width: 768px) {

@@ -1,8 +1,14 @@
 <template>
     <div class="cantaner_center">
         <div class="cantainer_left">
+            <div class="category">
+                <div  v-for="cat in productDetais.categories">
+                    <a :href="'/jj/'+cat.link">{{ cat.title }}</a>
+                    <p>/</p>
+                </div>
+            </div>
             <!-- <img src="../assets/images/products/eniko-kis-KsLPTsYaqIQ-unsplash.jpg" alt=""> -->
-            <!-- <img :src="productDetais.get_image" alt=""> -->
+            <!-- <img :src="productDetais.get_image" alt="">  this.productDetais.categories-->
             <vue-image-zoomer :regular="this.originalImg" :zoom="this.originalImg" img-class="img-fluid" alt="Product"
                 hover-message="ذره بین" touch-message="ذره بین" close-pos="top-right" message-pos="top" />
             <!-- <vue-image-zoomer :regular="productDetais.get_image" :zoom="productDetais.get_image" img-class="img-fluid"
@@ -171,11 +177,7 @@ export default {
         let BCup = document.querySelector('.BCup');
         let BCdown = document.querySelector('.BCdown');
         // let numberProduct = document.querySelector('#numberProduct');
-        // console.log(numberProduct.value)
-        // console.log(BCup)
-        // console.log(BCdown)
-        // console.log(this.toEnglishDigit("۱۲"))
-        // console.log(this.toPersinaDigit("3456"))
+
 
         this.number = this.toPersinaDigit(this.number)
 

@@ -1,4 +1,5 @@
 
 ###ToDO:
     - [x] create remove icon
-    - [] create category link top off product details
+    - [x] create category link top off product details
+    - [] fix category link top off product details
