@@ -77,7 +77,7 @@ class ProductsManager(models.Manager):
 
 class Product(models.Model):
     title = models.CharField(max_length=150, verbose_name='عنوان')
-    code = models.CharField(max_length=150, verbose_name='کد')
+    code = models.CharField(max_length=150, verbose_name='کد',unique=True)
     place = models.CharField(max_length=150, verbose_name='مکان کالا', null=True, blank=True)
     number = models.CharField(max_length=150, verbose_name='تعداد', null=True, blank=True)
     brand = models.CharField(max_length=150, verbose_name='برند', null=True, blank=True)

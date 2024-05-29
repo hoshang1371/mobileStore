@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     'mobileStore_news',
     'mobileStore_Founders',
     'account',
+    'mobileStore_order',
     # 'mobileStore_account',
     # 'mobileStore_Social',
 ]

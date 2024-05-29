@@ -85,7 +85,7 @@
                     </a>
                 </div>
 
-                <button class="AddToCart">اضافه به سبد خرید</button>
+                <button class="AddToCart" @click="AddToCart()">اضافه به سبد خرید</button>
             </div>
 
         </div>
@@ -372,6 +372,40 @@ export default {
                         title: "لطفا وارد حساب کاربری خود شوید",
                         type: "warn",
                     });        
+        },
+
+        // AddToCart() {
+        //     console.log('kir')
+        //     console.log(this.productDetais.code) 
+        //     console.log(this.number) 
+        //     console.log(this.toEnglishDigit(this.number)) 
+        // }
+
+        async AddToCart(){
+            // console.log("ezafe be sabad") 
+            // console.log(this.product.code) 
+            this.$store.commit('setIsLoading', true)
+            const formData = {
+                code: this.productDetais.code,
+                count : this.toEnglishDigit(this.number),
+            }
+            await axios
+                .post('/order/product_order/',formData)
+                .then(response => {
+                    // console.log(response.status)
+
+                    notify({
+                            title: "محصول به سبد خرید اضافه شد",
+                            type: "success",
+                            });
+                    this.$store.commit('setIsLoading', false)
+                })
+                .catch(error => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                        });  
+                })
         }
 
     },

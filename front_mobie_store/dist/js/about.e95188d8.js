@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkfront_mobie_store"]=self["webpackChunkfront_mobie_store"]||[]).push([[443],{833:function(n,t,e){e.r(t),e.d(t,{default:function(){return b}});var r=e(3396);const o={class:"about"},s=(0,r._)("h1",null,"This is an about page",-1),u=[s];function a(n,t){return(0,r.wg)(),(0,r.iD)("div",o,u)}var i=e(89);const c={},f=(0,i.Z)(c,[["render",a]]);var b=f}}]);
+//# sourceMappingURL=about.e95188d8.js.map

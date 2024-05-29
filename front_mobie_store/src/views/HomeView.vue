@@ -515,6 +515,7 @@ import sliderUpBox from '@/components/sliderUpBox.vue'
 import productListBox from '@/components/productListBox.vue'
 
 import { Autoplay } from '@glidejs/glide/dist/glide.modular.esm'
+import { onMounted, ref } from 'vue'
 
 export default {
   name: 'HomeView',
@@ -526,7 +527,10 @@ export default {
       sliderUp: [],
       sliderDowns: [],
       foundersData: [],
+
       glide1: "",
+      slider1: "",
+
       glide2: "",
       query: '',
       state: '',
@@ -542,6 +546,34 @@ export default {
     document.title = 'خانه' + ' | موبایل'
     this.getLatestProducts()
     this.getAllProducts()
+
+// todo: قبل از اجرا تابع کارای مربوط به گلید و انجام بده
+  this.slider1 = document.getElementById('glide_1');
+//     /*
+//     ==========================
+//     Hero
+//     ==========================
+//     */
+
+//     if (slider1) {
+//       this.glide1 = new Glide(slider1, {
+//         // autoplay: 3000,
+//         type: 'carsoual',
+//         startAt: 0,
+//         hoverpause: true,
+//         perView: 1,
+//         animationDuration: 800,
+//         // autoplay: 3000,
+//         animationTimingFunc: 'linear',
+//       });
+//     }
+
+    
+    // // this.glide1.pause();
+    // // this.glide1.pause();
+    // // glide.play(4000)
+    // this.glide1.mount();
+
 
     this.getSliderUp()
     this.getSliderDown()
@@ -605,6 +637,8 @@ this.googleLogin()
     // }
 
   },
+  
+
   methods: {
     async getLatestProducts() {
       await axios
@@ -682,8 +716,26 @@ this.googleLogin()
         .get('/slider/sliderUp/')
         .then(response => {
           this.sliderUp = response.data
-          // this.glide1.update({ autoplay: 3000 });
+
+          // console.log(this.slider1)
+          // if (this.slider1) {
+          //   this.glide1 = new Glide(this.slider1, {
+          //     // autoplay: 3000,
+          //     type: 'carsoual',
+          //     startAt: 0,
+          //     hoverpause: true,
+          //     perView: 1,
+          //     animationDuration: 800,
+          //     // autoplay: 3000,
+          //     animationTimingFunc: 'linear',
+          //   });
+          // }
+
           // this.glide1.mount();
+
+          // this.glide1.update({ autoplay: 3000 });
+          // console.log(this.glide1)
+
         })
     },
     //
@@ -712,28 +764,32 @@ this.googleLogin()
     */
 
 
-    const slider1 = document.getElementById('glide_1');
+    // var slider1 = document.getElementById('glide_1');
     /*
     ==========================
     Hero
     ==========================
     */
 
-    if (slider1) {
-      this.glide1 = new Glide(slider1, {
+    if (this.slider1) {
+      this.glide1 = new Glide(this.slider1, {
         type: 'carsoual',
         startAt: 0,
         hoverpause: true,
         perView: 1,
         animationDuration: 800,
-        animationTimingFunc: 'linear',
         // autoplay: 3000,
+        animationTimingFunc: 'linear',
       });
     }
-    // this.glide1.pause();
-    // this.glide1.pause();
-    // glide.play(4000)
+
+    
     this.glide1.mount();
+
+    // console.log(this.glide1)
+    // // // // this.glide1.pause();
+    // // // // this.glide1.pause();
+    // // // // glide.play(4000)
     // this.glide1.destroy();
     // this.glide1.disable();
     // this.glide1.update({ autoplay: 3000 });
@@ -803,5 +859,11 @@ this.googleLogin()
     //   }).mount();
     // }
   },
+  // setup() {
+  //   onMounted(() => {
+  //     console.log("kir khar1")
+  //   })
+  // },
+
 }
 </script>

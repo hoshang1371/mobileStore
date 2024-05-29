@@ -110,8 +110,8 @@ export default {
             await axios
                 .delete(`api/v1/DeleteCustomerComment/${id}`)
                 .then(response => {
-                    console.log(response)
-                    console.log(response.status)
+                    // console.log(response)
+                    // console.log(response.status)
 
                     if (response.status == 204) {
                         this.$emit("remove")
@@ -134,7 +134,8 @@ export default {
             notify({
                         title: "لطفا وارد حساب کاربری خود شوید",
                         type: "warn",
-                    });        }
+                    });        
+            }
         // setComment() {
         //     // console.log(this.comment.replies.length)
         //     // console.log(typeof(this.comment.replies))

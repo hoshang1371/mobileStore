@@ -122,10 +122,15 @@ export default {
                         }
                     } else {
                         this.errors.push('Something went wrong. please try again')
-
-                        console.log(JSON.stringify(error))
+                        notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                        });  
+                        // console.log(JSON.stringify(error))
                     }
                 })
+                console.log(this.$store.state.isAuthenticated)
+                // this.getOrderDetails()
                 this.$store.commit('setIsLoading', false)
         },
 

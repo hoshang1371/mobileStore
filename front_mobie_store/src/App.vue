@@ -6,11 +6,7 @@
 
                     <div class="nav__hamburger">
                         <img src="./assets/images/icons8-menu.svg" alt="">
-                        <!-- <svg>
-                        </svg> -->
-
                     </div>
-
                     <div class="nav__logo">
                         <a href="/" class="scroll-link">موبایل</a>
                     </div>
@@ -57,12 +53,17 @@
                         </router-link>
 
                         <a href="#" class="icon__item">
-                            <img src="./assets/images/icons8-search.svg" alt="">
+                            <img src="./assets/images/icons8-search.svg" alt="search">
                         </a>
 
-                        <a href="#" class="icon__item">
+                        <a href="#" class="icon__item" @click="logout()" v-if="$store.state.isAuthenticated">
+                            <img src="./assets/icons/logout.png" alt="log_out" >
+                        </a>
+
+                        
+                        <a href="#" class="icon__item" @click="isCloseOrder = !isCloseOrder;" v-if="$store.state.isAuthenticated">
                             <img src="./assets/images/icon-shopping-basket.svg" alt="">
-                            <span id="cart__total">0</span>
+                            <span v-if="orderDetails.length != 0" id="cart__total">{{ persianTotalCount }}</span>
                         </a>
                     </div>
 
@@ -201,7 +202,41 @@
         </div>
     </footer>
 
-    <!-- PopUp -->
+    <!-- order Details  orderDetails_show -->
+    <div class="orderDetails" v-bind:class="{ orderDetails_show: isCloseOrder}">
+        <div class="orderDetails_left" >
+
+            <div class="cart_nav">
+                <div class="orderDetails_close_container">
+                    <div @click="isCloseOrder = !isCloseOrder;" class="orderDetails_close"><svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" style="width: 1em; height: 1em; vertical-align: middle; fill: currentcolor; overflow: hidden;"><path d="M810.65984 170.65984q18.3296 0 30.49472 12.16512t12.16512 30.49472q0 18.00192-12.32896 30.33088l-268.67712 268.32896 268.67712 268.32896q12.32896 12.32896 12.32896 30.33088 0 18.3296-12.16512 30.49472t-30.49472 12.16512q-18.00192 0-30.33088-12.32896l-268.32896-268.67712-268.32896 268.67712q-12.32896 12.32896-30.33088 12.32896-18.3296 0-30.49472-12.16512t-12.16512-30.49472q0-18.00192 12.32896-30.33088l268.67712-268.32896-268.67712-268.32896q-12.32896-12.32896-12.32896-30.33088 0-18.3296 12.16512-30.49472t30.49472-12.16512q18.00192 0 30.33088 12.32896l268.32896 268.67712 268.32896-268.67712q12.32896-12.32896 30.33088-12.32896z"></path></svg></div>
+                </div>
+                <p>سبد خرید</p>
+            </div>
+
+            <orderDetails_component @remove="removeItem(index)"  v-for="(orderDetail, index) in orderDetails" v-bind:key="orderDetail.id" v-bind:orderDetail="orderDetail"/>
+
+               
+
+            <div v-if="orderDetails.length == 0" class="cart_empty">
+                <p>سبد خرید شما خالی است</p>
+            </div>
+
+            <div class="goto_checkOut">
+                <div class="product_price_sum">
+                    <a>جمع محصولات</a>
+                    <p>ریال {{ persianTotalPrice }}</p>
+                </div>
+                <div class="look_and_payment">
+                    <button>مشاهده و پرداخت</button>
+                </div>
+            </div>
+        </div>
+        <div  class="orderDetails_Right" @click="isCloseOrder = !isCloseOrder;"></div>
+
+    </div>
+
+
+    <!-- PopUp  -->
     <div class="popup hide__popup">
         <div class="popup__content">
             <div class="popup__close">
@@ -252,6 +287,11 @@ import axios from 'axios'
 // import { mapir, mapMarker } from "mapir-vue";
 import Map from './components/Map.vue'
 import OpenLMap from './components/OpenLMap.vue'
+import orderDetails_component from '@/components/orderDetails_component.vue'
+
+import toPersinaDigit from '@/views/ProductDetails.vue'
+// import sliderUpBox from '@/components/sliderUpBox.vue'
+// <orderDetails v-for="sliderUpp in sliderUp" v-bind:key="sliderUpp.id" v-bind:sliderUpp="sliderUpp" />
 
 export default {
     name: "App",
@@ -260,14 +300,21 @@ export default {
         // mapMarker,
         Map,
         OpenLMap,
+        orderDetails_component,
     },
     data() {
         return {
             siteSettings: [],
-
+            orderDetails: [],
+            totalCount: 0,
+            persianTotalCount: '',
+            totalPrice: 0,
+            persianTotalPrice: 0,
             // your Api Key.
+            isCloseOrder: true,
         }
     },
+
     beforeCreate() {
         this.$store.commit('initailizeStore')
 
@@ -285,6 +332,9 @@ export default {
 
     mounted() {
         this.getSiteSettings()
+
+        if(this.$store.state.isAuthenticated)
+            this.getOrderDetails()
 
         const navOpen = document.querySelector('.nav__hamburger');
         const navClose = document.querySelector('.close__toggle');
@@ -379,7 +429,10 @@ export default {
         // this.$notify("Hello user!");
     },
     methods: {
-
+        toPersinaDigit(digit) {
+            var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return digit.replace(/[0-9]/g, function (w) { return id[+w] });
+        },
         // onMapLoaded(event) {
         //     // in component
         //     this.map = event.map;
@@ -395,8 +448,55 @@ export default {
                 .get('/site__Setting/')
                 .then(response => {
                     this.siteSettings = response.data
-                    // console.log(this.siteSettings.address)
                 })
+                .catch((err) => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                    });    
+                })
+        },
+
+        async getOrderDetails() {
+            await axios
+                .get('/order/product_order/')
+                .then(response => {
+                    this.orderDetails = response.data
+                    for(let orderDetail in this.orderDetails){
+                        this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                        this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+                    }
+                    // console.log(this.totalPrice)
+                    this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+                    this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+                })
+                .catch((err) => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                    });    
+                })
+        },
+
+        // orderDetails_close(){
+        //     console.log(this.isCloseOrder);
+        // }
+
+        removeItem(index){
+            this.orderDetails.splice(index,1);
+        },
+
+        logout(){
+            axios.defaults.headers.common['Authorization'] = ""
+
+            localStorage.removeItem("token")
+            localStorage.removeItem("username")
+            localStorage.removeItem("userid")
+
+            this.$store.commit('removeToken')
+
+            this.$router.push('/')
+
         }
     },
 }

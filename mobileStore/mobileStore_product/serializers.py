@@ -41,6 +41,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
+            "code",
             "get_absolute_url",
             "description",
             "price",
@@ -98,6 +99,7 @@ class ProductDitailSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
+            "code",
             "get_absolute_url",
             "description",
             "price",

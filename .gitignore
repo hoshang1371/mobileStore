@@ -10,6 +10,8 @@ static_cdn/
 .env
 node_modules/
 
+front_mobie_store/node_modules/
+
 
 .DS_Store
 front_mobie_store/node_modules
@@ -34,3 +36,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+# envMobideStore_3.11
+/envMobideStore
+/envMobideStore_3.11

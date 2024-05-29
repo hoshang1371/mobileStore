@@ -6,6 +6,7 @@ import ActiveEmail from '../views/activeEmail.vue'
 import forgetPass from '../views/forgetPass.vue'
 import sendForgetPass from '../views/sendForgetPass.vue'
 import ProductDetails from '../views/ProductDetails.vue'
+
 const routes = [
   {
     path: '/',

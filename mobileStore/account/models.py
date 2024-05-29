@@ -104,7 +104,12 @@ class User(AbstractBaseUser, PermissionsMixin):#, CreatorBase
         """Check if the user have permissions to view the app `app_label."""
         # Simplest possible answer: Yes, always
         return True
-
+    
+    def get_full_name(self):
+        # full_name = '%s %s' % (self.first_name, self.last_name)
+        full_name = '%s' % (self.email)
+        return full_name.strip()
+    
     @property
     def is_staff(self):
         """Check if the user a member of staff."""

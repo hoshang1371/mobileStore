@@ -80,6 +80,10 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification()
 export default {
     name: 'productListBox',
     props: {
@@ -92,8 +96,31 @@ export default {
             // const toPath = this.$route.query.to || '/'
             this.$router.push(this.product.get_absolute_url)
         },
-        addToOrder(){
-            console.log("ezafe be sabad") 
+        async addToOrder(){
+            // console.log("ezafe be sabad") 
+            // console.log(this.product.code) 
+            this.$store.commit('setIsLoading', true)
+            const formData = {
+                code: this.product.code,
+                count : '1',
+            }
+            await axios
+                .post('/order/product_order/',formData)
+                .then(response => {
+                    // console.log(response.status)
+
+                    notify({
+                            title: "یک عدد محصول به سبد خرید اضافه شد",
+                            type: "success",
+                            });
+                    this.$store.commit('setIsLoading', false)
+                })
+                .catch(error => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                        });  
+                })
         }
     },
 }
