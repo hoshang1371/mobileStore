@@ -6,6 +6,9 @@ import ActiveEmail from '../views/activeEmail.vue'
 import forgetPass from '../views/forgetPass.vue'
 import sendForgetPass from '../views/sendForgetPass.vue'
 import ProductDetails from '../views/ProductDetails.vue'
+import Search from '../views/Search.vue'
+
+import Cart from '../views/cart.vue'
 
 const routes = [
   {
@@ -43,6 +46,16 @@ const routes = [
     path: '/password/reset/confirm/:uid/:token/',
     name : 'forgetPass',
     component: forgetPass
+  },
+  {
+    path: '/search',
+    name : 'Search',
+    component: Search
+  },
+  {
+    path: '/cart',
+    name : 'Cart',
+    component: Cart
   },
   {
     path: '/about',

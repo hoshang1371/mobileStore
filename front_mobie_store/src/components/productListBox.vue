@@ -1,5 +1,5 @@
 <template>
-    <div class="product" @click="toProductDitails()">
+    <div class="product" @click="toProductDitails()" @click.middle ="newTabProductDitails()" @mousedown.middle.prevent.stop>
         <div class="product__header">
             <img :src="product.get_thumbnail" alt="">
         </div>
@@ -83,22 +83,40 @@
 import axios from 'axios';
 import { useNotification } from "@kyvg/vue3-notification";
 
+// import orderDetails from "../mixins.js"
+// import totalCount  from "../mixins.js"
+// import persianTotalCount  from "../mixins.js"
+// import totalPrice  from "../mixins.js"
+// import persianTotalPrice  from "../mixins.js"
+
+
+import mixin  from "../mixins.js"
+
+
+
 const { notify } = useNotification()
 export default {
     name: 'productListBox',
     props: {
         product: Object,
     },
+
+    mixins: [ mixin ],
+
     mounted() {
     },
     methods: {
+        
         toProductDitails() {           
             // const toPath = this.$route.query.to || '/'
             this.$router.push(this.product.get_absolute_url)
         },
+        newTabProductDitails() {           
+            // const toPath = this.$route.query.to || '/'
+            window.open( this.product.get_absolute_url, "_blank");
+        },
         async addToOrder(){
-            // console.log("ezafe be sabad") 
-            // console.log(this.product.code) 
+
             this.$store.commit('setIsLoading', true)
             const formData = {
                 code: this.product.code,
@@ -107,7 +125,18 @@ export default {
             await axios
                 .post('/order/product_order/',formData)
                 .then(response => {
-                    // console.log(response.status)
+
+                    this.orderDetails = response.data
+                    
+                    this.totalCount = 0
+                    this.totalPrice = 0
+
+                    for(let orderDetail in this.orderDetails){
+                        this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                        this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+                    }
+                    this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+                    this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
 
                     notify({
                             title: "یک عدد محصول به سبد خرید اضافه شد",

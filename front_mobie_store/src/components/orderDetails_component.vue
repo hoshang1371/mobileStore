@@ -9,7 +9,14 @@
             <div>
                 <div class="price">
                     <!-- <p class="priceOff">{{ orderDetail.product.price }} ريال<</p> -->
-                    <p >{{ price }} ريال</p>
+                    <p :class="{
+                        'product__price_kh': orderDetail.product.priceOff != null,
+                    }"
+                    style="margin-top: auto;"
+                    >
+                    {{ price }} تومان</p>
+                    <h3 v-if="orderDetail.product.priceOff != null">تخفیف</h3>
+                    <h4 v-if="orderDetail.product.priceOff != null">{{ orderDetail.product.priceOff }} تومان</h4>
                     <!-- <p v-if="orderDetail.product.priceOff != null"> {{ orderDetail.product.priceOff }} ريال</p> -->
                 </div>
                 <div class="orderDetail_count">{{ count }}x</div>
@@ -32,6 +39,9 @@
     import { useNotification } from "@kyvg/vue3-notification";
     const { notify } = useNotification()
 
+
+    import mixin  from "../mixins.js"
+
 export default {
 
     name: 'orderDetails_component',
@@ -44,17 +54,18 @@ export default {
             count:'',
         }
     },
+    mixins: [ mixin] ,
     mounted() {
-        // console.log(this.orderDetail.product.title)
+
         // this.price = toPersinaDigit(this.orderDetail.price)
         // console.log(this.price)
         this.setDetail()
     },
     methods: {
-        toPersinaDigit(digit) {
-            var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            return digit.replace(/[0-9]/g, function (w) { return id[+w] });
-        },
+        // toPersinaDigit(digit) {
+        //     var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        //     return digit.replace(/[0-9]/g, function (w) { return id[+w] });
+        // },
         setDetail(){
             this.price = this.toPersinaDigit(parseInt(this.orderDetail.price).toString())
             this.count = this.toPersinaDigit(parseInt(this.orderDetail.count).toString())

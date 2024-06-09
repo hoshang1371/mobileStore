@@ -52,7 +52,7 @@
                             <img src="./assets/icons/register.png" alt="">
                         </router-link>
 
-                        <a href="#" class="icon__item">
+                        <a href="#" @click="setShowSearch()" class="icon__item">
                             <img src="./assets/images/icons8-search.svg" alt="search">
                         </a>
 
@@ -61,7 +61,7 @@
                         </a>
 
                         
-                        <a href="#" class="icon__item" @click="isCloseOrder = !isCloseOrder;" v-if="$store.state.isAuthenticated">
+                        <a class="icon__item" @click="isCloseOrder = !isCloseOrder;" v-if="$store.state.isAuthenticated">
                             <img src="./assets/images/icon-shopping-basket.svg" alt="">
                             <span v-if="orderDetails.length != 0" id="cart__total">{{ persianTotalCount }}</span>
                         </a>
@@ -227,7 +227,9 @@
                     <p>ریال {{ persianTotalPrice }}</p>
                 </div>
                 <div class="look_and_payment">
-                    <button>مشاهده و پرداخت</button>
+                    <router-link to="/cart" class="" v-if="$store.state.isAuthenticated">
+                        <button @click="isCloseOrder = !isCloseOrder;">مشاهده و پرداخت</button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -236,7 +238,7 @@
     </div>
 
 
-    <!-- PopUp  -->
+    <!-- PopUp  hide__popup-->
     <div class="popup hide__popup">
         <div class="popup__content">
             <div class="popup__close">
@@ -267,6 +269,29 @@
         </div>
     </div>
 
+
+    <!-- search -->
+    <div class="search hide__search">
+        <div class="search__content">
+            <div class="search__close">
+                <svg class="svg-icon"
+                    style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                    viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M810.65984 170.65984q18.3296 0 30.49472 12.16512t12.16512 30.49472q0 18.00192-12.32896 30.33088l-268.67712 268.32896 268.67712 268.32896q12.32896 12.32896 12.32896 30.33088 0 18.3296-12.16512 30.49472t-30.49472 12.16512q-18.00192 0-30.33088-12.32896l-268.32896-268.67712-268.32896 268.67712q-12.32896 12.32896-30.33088 12.32896-18.3296 0-30.49472-12.16512t-12.16512-30.49472q0-18.00192 12.32896-30.33088l268.67712-268.32896-268.67712-268.32896q-12.32896-12.32896-12.32896-30.33088 0-18.3296 12.16512-30.49472t30.49472-12.16512q18.00192 0 30.33088 12.32896l268.32896 268.67712 268.32896-268.67712q12.32896-12.32896 30.33088-12.32896z" />
+                </svg>
+            </div>
+
+            <div class="search__right">
+                <div class="right__content">
+                    <form method="get" action="/search">
+                        <input v-model="searchData" class="popup__form" placeholder="جستجو"  name="query">
+                        <button href="#">جستجو</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Go to top goto-top -->
 
     <a href="#" class="goto-top scroll-link">
@@ -292,6 +317,18 @@ import orderDetails_component from '@/components/orderDetails_component.vue'
 import toPersinaDigit from '@/views/ProductDetails.vue'
 // import sliderUpBox from '@/components/sliderUpBox.vue'
 // <orderDetails v-for="sliderUpp in sliderUp" v-bind:key="sliderUpp.id" v-bind:sliderUpp="sliderUpp" />
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification()
+
+// import orderDetails  from "./mixins.js"
+// import totalCount  from "./mixins.js"
+// import persianTotalCount  from "./mixins.js"
+// import totalPrice  from "./mixins.js"
+// import persianTotalPrice  from "./mixins.js"
+import mixin  from "./mixins.js"
+
+// import toPersinaDigit  from "./mixins.js"
 
 export default {
     name: "App",
@@ -302,16 +339,26 @@ export default {
         OpenLMap,
         orderDetails_component,
     },
+    mixins: [
+        mixin
+                // orderDetails,
+                // totalCount,
+                // persianTotalCount,
+                // totalPrice,
+                // persianTotalPrice,
+            ],
+
     data() {
         return {
             siteSettings: [],
-            orderDetails: [],
-            totalCount: 0,
-            persianTotalCount: '',
-            totalPrice: 0,
-            persianTotalPrice: 0,
+            // orderDetails: [],
+            // totalCount: 0,
+            // persianTotalCount: '',
+            // totalPrice: 0,
+            // persianTotalPrice: 0,
             // your Api Key.
             isCloseOrder: true,
+            searchData: ""
         }
     },
 
@@ -355,6 +402,15 @@ export default {
             navContainer.style.right = '-30rem';
             navContainer.style.width = '0';
         });
+
+        const search = document.querySelector(".search")
+        const closeSearch = document.querySelector(".search__close")
+
+        if (search) {
+            closeSearch.addEventListener("click", () => {
+                search.classList.add("hide__search");
+            })
+        }
 
         // const popup = document.querySelector(".popup")
         // const closePopup = document.querySelector(".popup__close")
@@ -429,10 +485,11 @@ export default {
         // this.$notify("Hello user!");
     },
     methods: {
-        toPersinaDigit(digit) {
-            var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            return digit.replace(/[0-9]/g, function (w) { return id[+w] });
-        },
+        // toPersinaDigit(digit) {
+        //     var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        //     return digit.replace(/[0-9]/g, function (w) { return id[+w] });
+        // },
+        
         // onMapLoaded(event) {
         //     // in component
         //     this.map = event.map;
@@ -462,6 +519,8 @@ export default {
                 .get('/order/product_order/')
                 .then(response => {
                     this.orderDetails = response.data
+                    console.log(this.orderDetails)
+
                     for(let orderDetail in this.orderDetails){
                         this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
                         this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
@@ -484,6 +543,16 @@ export default {
 
         removeItem(index){
             this.orderDetails.splice(index,1);
+            
+            this.totalCount = 0
+            this.totalPrice = 0
+            for(let orderDetail in this.orderDetails){
+                        this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                        this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+                    }
+                    this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+                    this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+
         },
 
         logout(){
@@ -497,7 +566,35 @@ export default {
 
             this.$router.push('/')
 
-        }
+        },
+        setShowSearch(){
+            const search = document.querySelector(".search")
+
+            search.classList.remove("hide__search");
+        },
+
+        async postSearch(){
+            console.log(this.searchData)
+
+            this.$store.commit('setIsLoading', true)
+            const formData = {
+                query: this.searchData,
+            }
+            await axios
+                .post('api/v1/products/search/', formData)
+                .then(response => {
+                    console.log(response.status)
+                    console.log(response.data)
+                    //! toDO: edame be product list
+                    this.$store.commit('setIsLoading', false)
+                })
+                .catch((err) => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                    });    
+                })
+        },
     },
 }
 </script>

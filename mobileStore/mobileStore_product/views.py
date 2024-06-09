@@ -306,3 +306,17 @@ class PostCustomerComment(CreateAPIView):
         return Response({
             "ok":"ok"
         })
+    
+
+@api_view(['POST'])
+def search(request):
+    query = request.data.get('query','')
+    print(query)
+    if query:
+        products = Product.objects.filter(
+                                        Q(title__icontains=query)|
+                                        Q(description__icontains=query))
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    else:
+         return Response({"products":[]})

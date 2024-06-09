@@ -7,5 +7,4 @@ urlpatterns = [
     #!product order url
     path('product_order/', product_order.as_view()),
     path('Delete_product_orderDetail/<int:pk>/',DeleteOrderDetail.as_view()),
-
 ]
