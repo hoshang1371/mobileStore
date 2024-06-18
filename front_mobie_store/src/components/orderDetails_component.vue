@@ -62,10 +62,7 @@ export default {
         this.setDetail()
     },
     methods: {
-        // toPersinaDigit(digit) {
-        //     var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        //     return digit.replace(/[0-9]/g, function (w) { return id[+w] });
-        // },
+
         setDetail(){
             this.price = this.toPersinaDigit(parseInt(this.orderDetail.price).toString())
             this.count = this.toPersinaDigit(parseInt(this.orderDetail.count).toString())

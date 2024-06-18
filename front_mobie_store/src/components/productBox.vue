@@ -2,6 +2,7 @@
                 <li class="glide__slide"
                 >
                 <productListBox 
+                  @orderDetails="setOrderDetails($event)"
                   v-bind:key="product.id" 
                   v-bind:product="product" 
                   />
@@ -20,6 +21,11 @@ export default {
     },
     components: {
       productListBox,
-    }
+    },
+    methods: {
+      setOrderDetails(orderDetails){
+            this.$emit("orderDetails",orderDetails)
+      },
+    },
 }
 </script>

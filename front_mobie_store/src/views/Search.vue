@@ -12,6 +12,7 @@
                 /> -->
             <div class="productList">
                 <productListBox 
+                @orderDetails="setOrderDetails($event)"
                 v-for="product1 in products" 
                 v-bind:key="product1.id" 
                 v-bind:product="product1"
@@ -54,6 +55,9 @@ export default {
         }
     },
     methods: {
+        setOrderDetails(orderDetails){
+            this.$emit("orderDetails",orderDetails)
+        },
         async performSearch(){
             this.$store.commit('setIsLoading',true)
 

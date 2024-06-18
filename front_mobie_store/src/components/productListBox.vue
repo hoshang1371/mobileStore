@@ -90,9 +90,10 @@ import { useNotification } from "@kyvg/vue3-notification";
 // import persianTotalPrice  from "../mixins.js"
 
 
-import mixin  from "../mixins.js"
+import mixin from "../mixins.js"
 
 
+// import { useComposition } from '@/compositions/composition'
 
 const { notify } = useNotification()
 export default {
@@ -101,10 +102,15 @@ export default {
         product: Object,
     },
 
-    mixins: [ mixin ],
-
+   mixins: [ mixin ],
+    // data() {
+    //     return {
+    //         orderDetails :[]
+    //     }
+    // },
     mounted() {
     },
+
     methods: {
         
         toProductDitails() {           
@@ -126,17 +132,20 @@ export default {
                 .post('/order/product_order/',formData)
                 .then(response => {
 
+                    // console.log(this.orderDetails)
                     this.orderDetails = response.data
-                    
-                    this.totalCount = 0
-                    this.totalPrice = 0
+                    this.$emit("orderDetails",this.orderDetails)
+                    // @orderDetails="setOrderDetails($event)"
 
-                    for(let orderDetail in this.orderDetails){
-                        this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
-                        this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
-                    }
-                    this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
-                    this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+                    // this.totalCount = 0
+                    // this.totalPrice = 0
+
+                    // for(let orderDetail in this.orderDetails){
+                    //     this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                    //     this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+                    // }
+                    // this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+                    // this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
 
                     notify({
                             title: "یک عدد محصول به سبد خرید اضافه شد",

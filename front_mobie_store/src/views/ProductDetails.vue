@@ -151,6 +151,7 @@ import commentSection from '@/components/commentSection.vue'
 import { useNotification } from "@kyvg/vue3-notification";
 
 const { notify } = useNotification()
+import mixin  from "../mixins.js"
 
 export default {
     name: "ProductDetails",
@@ -158,6 +159,8 @@ export default {
         VueImageZoomer,
         commentSection,
     },
+    mixins: [ mixin ],
+
     data() {
         return {
             number: "1",
@@ -209,9 +212,7 @@ export default {
         toEnglishDigit(replaceString) {
             var find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
             var replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            // console.log("digit")
-            // var replaceString = this;
-            // console.log(replaceString)
+
             var regex;
             for (var i = 0; i < find.length; i++) {
                 regex = new RegExp(find[i], "g");
@@ -219,10 +220,10 @@ export default {
             }
             return replaceString;
         },
-        toPersinaDigit(digit) {
-            var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-            return digit.replace(/[0-9]/g, function (w) { return id[+w] });
-        },
+        // toPersinaDigit(digit) {
+        //     var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        //     return digit.replace(/[0-9]/g, function (w) { return id[+w] });
+        // },
         KeyUpFunction(k) {
             // console.log(k)
             // console.log(k.key)
@@ -255,7 +256,7 @@ export default {
                 .then(response => {
                     this.productDetais = response.data
                     this.originalImg = this.productDetais.get_image
-                    console.log(this.productDetais.categories)
+                    // console.log(this.productDetais.categories)
                     this.stars = this.productDetais.int_average_rating
                     this.starsF = this.productDetais.float_average_rating
                 })

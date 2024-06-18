@@ -60,15 +60,29 @@ class product_order(ListCreateAPIView):
 
         x = order.first().orderdetail_set.filter(product_id=product.id)
         print(x)
+        # print(type(product.priceOff))
+        # print(type(count))
+
         if x:
             print("exist")
             print(x.values()[0]['count'])
             # x.update(count=count+x.values()[0]['count'])
             x.update(count=count)
+            if product.priceOff is None:
+                x.update(price=(product.price*count))
+            else:
+                x.update(price=(product.priceOff*count))
         else:
+            # ! priceOff lahaz shavad
             print("NO exist")
-            order.first().orderdetail_set.create(
-                product_id=product.id, price=product.price, count=count)
+
+            if product.priceOff is None:
+
+                order.first().orderdetail_set.create(
+                    product_id=product.id, price=(product.price*count), count=count)
+            else:
+                order.first().orderdetail_set.create(
+                    product_id=product.id, price=(product.priceOff*count), count=count)
         # TODO: kol sabad kharid ra befrestad
         orderDetails =order.first().orderdetail_set.all()
         serializer = OrderProductSerializer(orderDetails, many=True)

@@ -82,11 +82,14 @@
         <div class="lds-dual-ring"></div>
     </div>
 
-    <!-- <notifications /> -->
+    <!-- <notifications />  orderDetails-->
     <!-- <notifications position="bottom right" classes="vue-notification" /> -->
     <notifications position="bottom right" classes="notify_class" />
-    <router-view />
-
+    <router-view 
+    @orderDetails="setOrderDetails($event)"
+    :orderDetails="orderDetails"
+    />
+    
 
 
     <footer id="footer" class="footer">
@@ -213,7 +216,11 @@
                 <p>سبد خرید</p>
             </div>
 
-            <orderDetails_component @remove="removeItem(index)"  v-for="(orderDetail, index) in orderDetails" v-bind:key="orderDetail.id" v-bind:orderDetail="orderDetail"/>
+            <orderDetails_component 
+                @remove="removeItem(index)"
+                v-for="(orderDetail, index) in orderDetails"
+                v-bind:key="orderDetail.id" v-bind:orderDetail="orderDetail"
+               />
 
                
 
@@ -314,7 +321,7 @@ import Map from './components/Map.vue'
 import OpenLMap from './components/OpenLMap.vue'
 import orderDetails_component from '@/components/orderDetails_component.vue'
 
-import toPersinaDigit from '@/views/ProductDetails.vue'
+// import toPersinaDigit from '@/views/ProductDetails.vue'
 // import sliderUpBox from '@/components/sliderUpBox.vue'
 // <orderDetails v-for="sliderUpp in sliderUp" v-bind:key="sliderUpp.id" v-bind:sliderUpp="sliderUpp" />
 import { useNotification } from "@kyvg/vue3-notification";
@@ -339,19 +346,11 @@ export default {
         OpenLMap,
         orderDetails_component,
     },
-    mixins: [
-        mixin
-                // orderDetails,
-                // totalCount,
-                // persianTotalCount,
-                // totalPrice,
-                // persianTotalPrice,
-            ],
-
+    mixins: [ mixin ],
     data() {
         return {
             siteSettings: [],
-            // orderDetails: [],
+            orderDetails: [],
             // totalCount: 0,
             // persianTotalCount: '',
             // totalPrice: 0,
@@ -499,7 +498,18 @@ export default {
         // onClick(e) {
         //     console.log(e, "HIiiiiiiii");
         // },
+        setOrderDetails(orderDetails){
+            this.orderDetails = orderDetails
+            this.totalCount = 0
+            this.totalPrice = 0
+            for(let orderDetail in this.orderDetails){
+                this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+            }
+            this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+            this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
 
+         },
         async getSiteSettings() {
             await axios
                 .get('/site__Setting/')
@@ -519,8 +529,7 @@ export default {
                 .get('/order/product_order/')
                 .then(response => {
                     this.orderDetails = response.data
-                    console.log(this.orderDetails)
-
+                    
                     for(let orderDetail in this.orderDetails){
                         this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
                         this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price

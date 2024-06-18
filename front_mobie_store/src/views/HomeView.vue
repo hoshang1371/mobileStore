@@ -60,7 +60,12 @@
           <div class="glide" id="glide_2">
             <div class="glide__track" data-glide-el="track">
               <ul class="glide__slides latest-center">
-                <ProductBox v-for="product in latestProduct" v-bind:key="product.id" v-bind:product="product" />
+                <ProductBox 
+                @orderDetails="setOrderDetails($event)"
+                v-for="product in latestProduct" 
+                v-bind:key="product.id" 
+                v-bind:product="product" 
+                />
               </ul>
             </div>
 
@@ -144,7 +149,11 @@
           <div class="category__container">
             <div class="category__center">
 
-              <productListBox v-for="product1 in changeProduct" v-bind:key="product1.id" v-bind:product="product1" />
+              <productListBox 
+              @orderDetails="setOrderDetails($event)"
+              v-for="product1 in changeProduct" 
+              v-bind:key="product1.id" v-bind:product="product1" 
+              />
 
 
               <!-- 
@@ -517,6 +526,8 @@ import productListBox from '@/components/productListBox.vue'
 import { Autoplay } from '@glidejs/glide/dist/glide.modular.esm'
 import { onMounted, ref } from 'vue'
 
+import mixin  from "../mixins.js"
+
 export default {
   name: 'HomeView',
   data() {
@@ -537,6 +548,8 @@ export default {
       code: '',
     }
   },
+  mixins: [ mixin ],
+
   components: {
     ProductBox,
     sliderUpBox,
@@ -640,6 +653,13 @@ this.googleLogin()
   
 
   methods: {
+
+    setOrderDetails(orderDetails){
+            // console.log("HomeDetails")
+            // console.log(orderDetails)
+            this.$emit("orderDetails",orderDetails)
+    },
+
     async getLatestProducts() {
       await axios
         .get('/api/v1/latest-product/')
@@ -786,7 +806,7 @@ this.googleLogin()
     
     this.glide1.mount();
 
-    // console.log(this.glide1)
+    // console.log(this.orderDetails)
     // // // // this.glide1.pause();
     // // // // this.glide1.pause();
     // // // // glide.play(4000)
