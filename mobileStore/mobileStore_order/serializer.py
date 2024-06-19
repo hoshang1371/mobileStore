@@ -20,3 +20,9 @@ class DeleteOrderDetailSerializer(serializers.ModelSerializer):
     fields = (
         "id",
         )
+    
+class OrderProductSerializerForListOfbuy(serializers.ModelSerializer):
+    class Meta:
+        model = OrderDetail
+        # fields = '__all__'
+        fields = ('id','count')
