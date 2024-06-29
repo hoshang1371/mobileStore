@@ -29,6 +29,13 @@ class product_order(ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         user = Token.objects.get(pk=request.auth).user
         order = Order.objects.filter(owner=user,is_paid=False).first()
+
+
+        # orderDetails =order.first().orderdetail_set.all()
+        # serializer = OrderProductSerializer(orderDetails, many=True)
+        # return Response(serializer.data)
+
+
         orderDetails =order.orderdetail_set.all()
         serializer = OrderProductSerializer(orderDetails, many=True)
         return Response(serializer.data)
@@ -36,9 +43,12 @@ class product_order(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = Token.objects.get(pk=request.auth).user
         order = Order.objects.filter(owner=user,is_paid=False)
+        
         if not order.exists():
             order =  Order.objects.create(owner=user)
 
+        print("===========================================")
+        print(order)
 
         code = int(request.data.get('code'))
         count = int(request.data.get('count'))
@@ -47,12 +57,16 @@ class product_order(ListCreateAPIView):
 
         product = Product.objects.filter(code=code).first()
 
-
+        #ToDO: fix IT 
         if count > int(product.number):
+            # data = {
+            #     'err':'not exist',
+            #     'number': x[0].product.number
+            # }
             print("in tedad dar anbar mojod nist")
             return JsonResponse({
-                    "massege": "no this count exist",
-                    })
+                    "err": "no this count exist",
+                    }, status=201)
         else:
             print("mojod dar anbar ast")
         # print("tedad",product.number)
@@ -121,7 +135,7 @@ class product_order_List_buy(UpdateAPIView):
                 'err':'not exist',
                 'number': x[0].product.number
             }
-            return JsonResponse(data, safe=False)
+            return JsonResponse(data, safe=False, status=201)
 
         if x:
             #* gheymat ham bayad barrasi shavad
@@ -162,6 +176,4 @@ class product_order_List_buy(UpdateAPIView):
         }
 
         return JsonResponse(response, safe=False)
-        # return JsonResponse({
-        #             "massege": "kir khar",
-        #         })
+
