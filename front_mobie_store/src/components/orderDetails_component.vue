@@ -34,6 +34,9 @@
 
 
 <script>
+
+    import { ref,watch,getCurrentInstance  } from 'vue';
+
     import axios from 'axios';
 
     import { useNotification } from "@kyvg/vue3-notification";
@@ -41,6 +44,7 @@
 
 
     import mixin  from "../mixins.js"
+    import useComp from '../compositionMixin.js'
 
 export default {
 
@@ -60,6 +64,24 @@ export default {
         // this.price = toPersinaDigit(this.orderDetail.price)
         // console.log(this.price)
         this.setDetail()
+    },
+    // watch:{
+    //     orderDetail(value){ // watch it
+    //       console.log(value)
+    //     }
+    // },
+    
+    setup(props) {
+        const {toPersinaDigit} = useComp()
+
+        const vm = getCurrentInstance()
+        watch(props.orderDetail , ()=>{
+            console.log("watch=",props.orderDetail.count)
+            vm.data.count= toPersinaDigit(parseInt(props.orderDetail.count).toString())
+            vm.data.price= toPersinaDigit(parseInt(props.orderDetail.price).toString())
+        }
+    )
+
     },
     methods: {
 

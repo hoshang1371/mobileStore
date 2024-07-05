@@ -160,7 +160,9 @@ export default {
         commentSection,
     },
     mixins: [ mixin ],
-
+    props: {
+        orderDetails: Object,
+    },
     data() {
         return {
             number: "1",
@@ -173,6 +175,7 @@ export default {
             originalImg: "",
             comments: [],
             message: "",
+            // orderDetails: Object,
         }
     },
     mounted() {
@@ -181,7 +184,7 @@ export default {
         let BCdown = document.querySelector('.BCdown');
         // let numberProduct = document.querySelector('#numberProduct');
 
-
+        console.log("this.orderDetails=",this.orderDetails)
         this.number = this.toPersinaDigit(this.number)
 
 
@@ -206,7 +209,7 @@ export default {
             this.number = this.toPersinaDigit((parseInt(this.toEnglishDigit(this.number)) + 1).toString())
         },
         BCdownClick() {
-            if (parseInt(this.toEnglishDigit(this.number)) > 0)
+            if (parseInt(this.toEnglishDigit(this.number)) > 1)
                 this.number = this.toPersinaDigit((parseInt(this.toEnglishDigit(this.number)) - 1).toString())
         },
         toEnglishDigit(replaceString) {
@@ -220,10 +223,7 @@ export default {
             }
             return replaceString;
         },
-        // toPersinaDigit(digit) {
-        //     var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        //     return digit.replace(/[0-9]/g, function (w) { return id[+w] });
-        // },
+
         KeyUpFunction(k) {
             // console.log(k)
             // console.log(k.key)
@@ -267,9 +267,7 @@ export default {
             const product_id = this.$route.params.product_id
             const product_title = this.$route.params.product_title
 
-            // setTimeout(() => {
-            //     source.cancel();
-            // }, 30000);
+
             await axios
                 // .get(`api/v1/products/${product_id}/${product_title}`) productDetais.get_image
                 .get(`/api/v1/GetCustomerComment/${product_id}`)
@@ -375,17 +373,13 @@ export default {
                     });        
         },
 
-        // AddToCart() {
-        //     console.log('kir')
-        //     console.log(this.productDetais.code) 
-        //     console.log(this.number) 
-        //     console.log(this.toEnglishDigit(this.number)) 
-        // }
+ 
 
         async AddToCart(){
             // console.log("ezafe be sabad") 
             // console.log(this.product.code) 
             this.$store.commit('setIsLoading', true)
+            const toPath = this.$route.query.to || '/'
             const formData = {
                 code: this.productDetais.code,
                 count : this.toEnglishDigit(this.number),
@@ -393,23 +387,41 @@ export default {
             await axios
                 .post('/order/product_order/',formData)
                 .then(response => {
-                    // console.log(response.status)
 
-                    notify({
-                            title: "محصول به سبد خرید اضافه شد",
-                            type: "success",
-                            });
+                    if( response.status == 200 ){
+
+                        for(var a in response.data){
+                            this.orderDetails[a].count = response.data[a].count
+                        }
+
+                        notify({
+                                title: "محصول به سبد خرید اضافه شد",
+                                type: "success",
+                                });
+                                // this.setOrderDetails(this.orderDetails);
+                                // this.$emit("orderDetails",response.data)
+                                // this.$router.push(toPath)
+                    }
+                    else if(response.status == 201){
+                        notify({
+                        title: " این تعداد در انبار موجود نیست ",
+                        type: "warn",
+                        });  
+                    }
                     this.$store.commit('setIsLoading', false)
                 })
-                .catch(error => {
+                /*.catch(error => {
                     notify({
                         title: "مشکلی بوجود امده است",
                         type: "warn",
                         });  
-                })
+                })*/
         }
 
     },
+    // updated() {
+    //     console.log("updated=",this.orderDetails)
+    // },
 }
 
 </script>

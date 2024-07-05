@@ -14,6 +14,16 @@ class OrderProductSerializer(serializers.ModelSerializer):
         depth = 1
         # fields = {'product','count'}
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # print(representation['count'])
+        # print(representation['product']['number'])
+        if(int(representation['count'])>int(representation['product']['number'])):
+            representation['error'] = "این تعداد در انبار موجود نیست"
+        else:
+            representation['error'] =""
+        return representation
+
 
 class DeleteOrderDetailSerializer(serializers.ModelSerializer):
     model = OrderDetail

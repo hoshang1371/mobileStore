@@ -110,6 +110,55 @@ class DeleteOrderDetail(DestroyAPIView):
     serializer_class = DeleteOrderDetailSerializer
     permission_classes = [IsAuthenticated]
 
+class product_orders_details_List_buy(UpdateAPIView):
+    queryset = OrderDetail.objects.all()
+    serializer_class = OrderProductSerializerForListOfbuy
+    permission_classes = [IsAuthenticated]
+    def put(self, request, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        order = Order.objects.filter(owner=user,is_paid=False).first()
+
+        orderDetails =order.orderdetail_set.all()
+        serializer = OrderProductSerializer(orderDetails, many=True)
+
+        orderDetailsRes = request.data.get('orderDetails')
+
+        # errorData =[]
+        for orderDe,orderDeRes in zip(orderDetails,orderDetailsRes):
+
+            if int(orderDeRes['count']) < 1:
+                orderDeRes['count'] = "1"
+            #! teedad hame check shavad
+            
+            # if int(orderDeRes['count']) > int(orderDe.product.number):
+            #     data = {
+            #         'product': orderDe.product.title,
+            #         'number': orderDe.product.number
+            #     }
+            #     errorData.append(data)
+            # print(f"errorData={errorData}")
+
+            # if len(errorData) == 0:
+            #     print("kirKhar")
+
+
+            if orderDe.product.priceOff is None:
+                orderDe.price = (int(orderDeRes['count'])*orderDe.product.price)
+            else:
+                orderDe.price = (int(orderDeRes['count'])*orderDe.product.priceOff)
+            orderDe.count = orderDeRes['count']
+            orderDe.save()
+        # print("========================================")
+
+        # orderDetails.update(orderDetailsRes[0])
+        # return JsonResponse({
+        #             "err": "no this count exist", orderDetails
+        #     })
+        # return JsonResponse(data, safe=False, status=201)
+        # if len(errorData) == 0:
+        return Response(serializer.data)
+        # else:
+            # return JsonResponse(errorData, safe=False, status=201)
 
 class product_order_List_buy(UpdateAPIView):
     queryset = OrderDetail.objects.all()
@@ -126,7 +175,7 @@ class product_order_List_buy(UpdateAPIView):
         count = int(request.data.get('count'))
 
         post_price = PostPrice.objects.filter().first()
-        if count < 0:
+        if count < 1:
             count = 1
             
         x = order.orderdetail_set.filter(id=orderdetail_product_code)

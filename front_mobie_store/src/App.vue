@@ -231,7 +231,7 @@
             <div class="goto_checkOut">
                 <div class="product_price_sum">
                     <a>جمع محصولات</a>
-                    <p>ریال {{ persianTotalPrice }}</p>
+                    <p>تومان {{ persianTotalPrice }}</p>
                 </div>
                 <div class="look_and_payment">
                     <router-link to="/cart" class="" v-if="$store.state.isAuthenticated">
@@ -339,6 +339,7 @@ import mixin  from "./mixins.js"
 
 export default {
     name: "App",
+    inheritAttrs: false,
     components: {
         // mapir,
         // mapMarker,
@@ -528,8 +529,9 @@ export default {
             await axios
                 .get('/order/product_order/')
                 .then(response => {
+
                     this.orderDetails = response.data
-                    
+
                     for(let orderDetail in this.orderDetails){
                         this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
                         this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price

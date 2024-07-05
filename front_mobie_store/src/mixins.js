@@ -24,7 +24,7 @@ var mixin = {
       this.number = this.toPersinaDigit((parseInt(this.toEnglishDigit(this.number)) + 1).toString())
     },
     BCdownClick() {
-      if (parseInt(this.toEnglishDigit(this.number)) > 0)
+      if (parseInt(this.toEnglishDigit(this.number)) > 1)
         this.number = this.toPersinaDigit((parseInt(this.toEnglishDigit(this.number)) - 1).toString())
     },
     KeyUpFunction(k) {

@@ -86,12 +86,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if representation['priceOff'] != None:
             representation['priceOff'] = convert_numbers.english_to_persian(str(representation['priceOff']))
 
-        # cat = representation['categories'][0]
-
-        # categories= self.get_parnt_category(cat)
-        # print(f'categories={categories}')
-        # # ProductCategory.objects.all()
-        # representation['categories'] = categories
         return representation
     
 class ProductDitailSerializer(serializers.ModelSerializer):
@@ -101,6 +95,7 @@ class ProductDitailSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "code",
+            "number",
             "get_absolute_url",
             "description",
             "smallDescription",

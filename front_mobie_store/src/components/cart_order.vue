@@ -4,7 +4,8 @@
         <td>
             <div>
                 <a href="">{{ orderDetail.product.title }}</a>
-                <!-- <span>{{ orderDetail.product.smallDescription }}</span> -->
+                <span class="error" v-if="orderDetail.error != ''"><p>{{orderDetail.error}}</p></span>
+                <span v-else></span>
             </div>
         </td>
         
@@ -14,10 +15,29 @@
         align-items: center;
         ">
             <div class="number">
-                <input type="text" id="numberProduct" name="first_name" class="toPe" @keyup="KeyUpFunction($event)" v-model="number">
+                <input 
+                type="text" id="numberProduct" 
+                name="first_name" class="toPe" 
+                @keyup="
+                KeyUpFunction($event);
+                conectToOrderDetails($event);
+                " 
+                @keyup.enter="sendToOrderDetails()"
+                v-model="number"
+                >
                 <a class="up">
-                    <div class='BCup' @click="BCupClick()">+</div>
-                    <div class='BCdown' @click="BCdownClick()">-</div>
+                    <div class='BCup' 
+                    @click="
+                        BCupClick(); 
+                        sendToOrderDetails();
+                        " 
+                    >+</div>
+                    <div class='BCdown' 
+                    @click="
+                        BCdownClick(); 
+                        sendToOrderDetails();
+                    " 
+                    >-</div>
                 </a>
             </div>
 
@@ -57,6 +77,8 @@ import axios from 'axios';
 
 import { useNotification } from "@kyvg/vue3-notification";
 const { notify } = useNotification()
+import useComp from '../compositionMixin.js'
+import { ref,watch,getCurrentInstance  } from 'vue';
 
 export default {
     name: 'cart_order',
@@ -74,7 +96,24 @@ export default {
         this.number = this.toPersinaDigit((parseInt(this.orderDetail.count)).toString())
         this.price = (this.toPersinaDigit(parseInt(this.orderDetail.price).toString()));
     },
+    setup(props) {
+        const {toPersinaDigit} = useComp()
+
+        const vm = getCurrentInstance()
+        watch(props.orderDetail , ()=>{
+            console.log(props.orderDetail.error)
+            vm.data.number= toPersinaDigit(parseInt(props.orderDetail.count).toString())
+
+            vm.data.price= toPersinaDigit(parseInt(props.orderDetail.price).toString())
+        }
+    )
+
+    },
     methods: {
+        conectToOrderDetails(k){
+
+            this.orderDetail.count =this.toEnglishDigit(this.number);
+        },
         async removeThisItem(id) {
             this.$store.commit('setIsLoading', true)
 
@@ -101,6 +140,48 @@ export default {
                     });    
                 })
         },
+
+        async sendToOrderDetails(){
+            const formData = {
+                id: this.orderDetail.id,
+                count: this.number,
+            }
+            this.$store.commit('setIsLoading', true)
+            await axios
+                .put('/order/update_for_buy/', formData)
+                .then(response => {
+
+                    if( response.status == 200 ){
+                        this.number = this.toPersinaDigit((parseInt(response.data.count)).toString());
+                        this.price = (this.toPersinaDigit(parseInt(response.data.price).toString()));
+                        this.orderDetail.count=response.data.count
+                        this.orderDetail.price=response.data.price
+    
+                        this.$emit("orderDetail",this.orderDetail)
+                        notify({
+                                title: "محصول به سبد خرید اضافه شد",
+                                type: "success",
+                                });
+                    }
+                    else if(response.status == 201){
+
+                        this.number = this.toPersinaDigit((parseInt(response.data.number)).toString());
+
+                        notify({
+                        title: " این تعداد در انبار موجود نیست ",
+                        type: "warn",
+                        });  
+                    }
+                    //! toDO: edame be product list
+                    this.$store.commit('setIsLoading', false)
+                })
+                .catch((err) => {
+                    notify({
+                        title: "مشکلی بوجود امده است",
+                        type: "warn",
+                    });    
+                })
+        }
     },
 
 }
