@@ -30,6 +30,7 @@
                 <p>تومان &nbsp;<span>{{persianTotalPrice}}</span> </p>
             </div>
             <div>
+                <!-- ! اگر ارور داشت غیر فعال شود -->
                 <button>ادامه</button>
             </div>
             
@@ -71,6 +72,10 @@ export default{
 
         document.title = "سبد خرید"
         window.scroll(0, 0);
+        if(this.orderDetails.length == 0){
+            console.log("tohi")
+            this.getOrderDetails()
+        }
         this.totalPrice = 0
         this.totalCount = 0
         for(let orderDetail in this.orderDetails){
@@ -79,12 +84,43 @@ export default{
         }
         this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
         this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+
     },
     // updated() {
     //     console.log("updated=",this.orderDetails)
     // },
 
     methods: {
+
+        async getOrderDetails() {
+            await axios
+                .get('/order/product_order/')
+                .then(response => {
+                    for(var a in response.data){
+                            if (response.data[a].error != ""){
+                                ++this.errors;
+                            }
+                            this.orderDetails[a].error = response.data[a].error
+                            this.orderDetails[a].price = response.data[a].price
+                            this.orderDetails[a].count = response.data[a].count
+                        }
+                        console.log(this.orderDetails)
+                        for(let orderDetail in this.orderDetails){
+                            this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
+                            this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
+                        }
+                        this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
+                        this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+                    // this.orderDetails = response.data
+
+                })
+                // .catch((err) => {
+                //     notify({
+                //         title: "مشکلی بوجود امده است",
+                //         type: "warn",
+                //     });    
+                // })
+        },
         removeItem(index){
             this.orderDetails.splice(index,1);   
         },
@@ -102,10 +138,8 @@ export default{
                     console.log((response.data))
                     if( response.status == 200 ){
                         for(var a in response.data){
-                            console.log(this.orderDetails[a].product.title+'  '+this.orderDetails[a].error)
                             if (response.data[a].error != ""){
                                 ++this.errors;
-                                console.log(this.errors)
                             }
                             this.orderDetails[a].error = response.data[a].error
                             this.orderDetails[a].price = response.data[a].price
