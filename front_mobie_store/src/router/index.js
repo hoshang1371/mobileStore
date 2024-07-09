@@ -8,6 +8,7 @@ import sendForgetPass from '../views/sendForgetPass.vue'
 import ProductDetails from '../views/ProductDetails.vue'
 import Search from '../views/Search.vue'
 import Category from '../views/category.vue'
+import postInfo from '../views/postInfo.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -62,6 +63,11 @@ const routes = [
     path: '/category',
     name : 'Category',
     component: Category
+  },
+  {
+    path: '/postInfo',
+    name : 'postInfo',
+    component: postInfo
   },
   {
     path: '/about',

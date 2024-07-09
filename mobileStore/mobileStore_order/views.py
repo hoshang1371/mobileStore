@@ -180,6 +180,12 @@ class product_order_List_buy(UpdateAPIView):
             
         x = order.orderdetail_set.filter(id=orderdetail_product_code)
         if count > int(x[0].product.number):
+            if x:
+                if x[0].product.priceOff is None:
+                    x.update(price=(x[0].product.number*x[0].product.price))
+                else:
+                    x.update(price=(count*x[0].product.priceOff))
+                x.update(count=x[0].product.number)
             data = {
                 'err':'not exist',
                 'number': x[0].product.number

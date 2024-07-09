@@ -156,6 +156,7 @@ export default {
                         this.price = (this.toPersinaDigit(parseInt(response.data.price).toString()));
                         this.orderDetail.count=response.data.count
                         this.orderDetail.price=response.data.price
+                        this.orderDetail.error=response.data.error
     
                         this.$emit("orderDetail",this.orderDetail)
                         notify({
@@ -166,7 +167,9 @@ export default {
                     else if(response.status == 201){
 
                         this.number = this.toPersinaDigit((parseInt(response.data.number)).toString());
-
+                        console.log(response.data)
+                        this.orderDetail.count=response.data.number
+                        this.orderDetail.error=""
                         notify({
                         title: " این تعداد در انبار موجود نیست ",
                         type: "warn",

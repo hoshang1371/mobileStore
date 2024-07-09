@@ -197,26 +197,23 @@ export default {
             return replaceString;
         },
 
-        KeyUpFunction(k) {
-            // console.log(k)
-            // console.log(k.key)
-            // console.log(this.number)
-            // # inja eshtebah ast
-            if ((k.key >= "0" && k.key <= "9") || k.key == "Backspace") {
-                let en_number = this.number;
+        // KeyUpFunction(k) {
 
-                let number = this.toEnglishDigit(en_number);
-                let number_buffer = parseInt(number, 10);
-                number = number_buffer.toString();
-                // console.log(number)
-                if (isNaN(number))
-                    number = "0";
-                this.number = (this.toPersinaDigit(number));
-            }
-            else {
-                this.number = (this.toPersinaDigit(parseInt(this.toEnglishDigit(this.number)).toString()));
-            }
-        },
+        //     if ((k.key >= "0" && k.key <= "9") || k.key == "Backspace") {
+        //         let en_number = this.number;
+
+        //         let number = this.toEnglishDigit(en_number);
+        //         let number_buffer = parseInt(number, 10);
+        //         number = number_buffer.toString();
+        //         // console.log(number)
+        //         if (isNaN(number))
+        //             number = "0";
+        //         this.number = (this.toPersinaDigit(number));
+        //     }
+        //     else {
+        //         this.number = (this.toPersinaDigit(parseInt(this.toEnglishDigit(this.number)).toString()));
+        //     }
+        // },
         // product_id
         // product_title
 
@@ -349,8 +346,7 @@ export default {
  
 
         async AddToCart(){
-            // console.log("ezafe be sabad") 
-            // console.log(this.product.code) 
+
             this.$store.commit('setIsLoading', true)
             const toPath = this.$route.query.to || '/'
             const formData = {

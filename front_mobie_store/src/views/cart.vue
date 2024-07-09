@@ -31,7 +31,7 @@
             </div>
             <div>
                 <!-- ! اگر ارور داشت غیر فعال شود -->
-                <button>ادامه</button>
+                <button @click="toContinue()">ادامه</button>
             </div>
             
     </div>
@@ -73,12 +73,16 @@ export default{
         document.title = "سبد خرید"
         window.scroll(0, 0);
         if(this.orderDetails.length == 0){
-            console.log("tohi")
             this.getOrderDetails()
         }
         this.totalPrice = 0
         this.totalCount = 0
         for(let orderDetail in this.orderDetails){
+            if (this.orderDetails[orderDetail].error != "")
+            {
+                ++this.errors;
+            }
+            // this.orderDetails[a].error = response.data[a].error
             this.totalCount = this.totalCount + this.orderDetails[orderDetail].count
             this.totalPrice = this.totalPrice + this.orderDetails[orderDetail].price
         }
@@ -190,6 +194,26 @@ export default{
                     }
                     this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
                     this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+        },
+
+        toContinue(){
+
+            this.errors =0
+            for(let a in this.orderDetails){
+                if (this.orderDetails[a].error != "")
+                {
+                    ++this.errors;
+                }
+            }
+            if(this.errors != 0){
+                notify({
+                        title: "تعداد محصولات را اصلاح کنید",
+                        type: "warn",
+                    });  
+            }
+            else{
+                this.$router.push('/postInfo')
+            }
         }
     },
 
