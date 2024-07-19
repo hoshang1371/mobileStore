@@ -9,6 +9,8 @@ import ProductDetails from '../views/ProductDetails.vue'
 import Search from '../views/Search.vue'
 import Category from '../views/category.vue'
 import postInfo from '../views/postInfo.vue'
+import panelAdmin from '../views/panelAdmin.vue'
+import phoneNumberPanelAdmin from '../views/phoneNumberPanelAdmin.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -68,6 +70,16 @@ const routes = [
     path: '/postInfo',
     name : 'postInfo',
     component: postInfo
+  },
+  {
+    path: '/panelAdmin',
+    name : 'panelAdmin',
+    component: panelAdmin
+  },
+  {
+    path: '/phoneNumberPanelAdmin',
+    name : 'phoneNumberPanelAdmin',
+    component: phoneNumberPanelAdmin
   },
   {
     path: '/about',
