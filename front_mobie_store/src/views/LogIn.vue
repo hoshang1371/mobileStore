@@ -129,7 +129,6 @@ export default {
                         // console.log(JSON.stringify(error))
                     }
                 })
-                console.log(this.$store.state.isAuthenticated)
                 // this.getOrderDetails()
                 this.$store.commit('setIsLoading', false)
         },

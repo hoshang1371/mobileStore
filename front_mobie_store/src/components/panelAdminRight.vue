@@ -6,7 +6,7 @@
         <a href="">علاقه مندی ها</a>
         <a href="">نظرات</a>
         <a href="">عملیات رمز عبور</a>
-        <a href="">شماره ی شما</a>
+        <router-link to="/phoneNumberPanelAdmin">شماره ی شما</router-link>
     </div>
 </template>
 

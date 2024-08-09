@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.core.validators import RegexValidator
 
 # from django.contrib.auth.models import AbstractUser
 # from django.core.mail import EmailMessage
@@ -44,6 +45,8 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
+
+
 # from common.models import CreatorBase
 
 class CustomUserManager(BaseUserManager):
@@ -86,6 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):#, CreatorBase
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    phone_regex = RegexValidator(regex=r'^\0?1?\d{9,15}$', message="Phone number must be entered in the format: '0999999999'. Up to 15 digits allowed.")
+    mobile_phone_number = models.CharField(null=True ,blank=True ,validators=[phone_regex], max_length=17, verbose_name= 'تلفن همراه')
+
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
@@ -115,3 +122,20 @@ class User(AbstractBaseUser, PermissionsMixin):#, CreatorBase
         """Check if the user a member of staff."""
         # Simplest possible answer: All admins are staff
         return self.is_admin
+    
+
+class UserCodeVarify(models.Model):
+    user  = models.OneToOneField(
+        User ,
+        on_delete=models.CASCADE,
+    )
+    codeVarifySms = models.CharField( max_length=5,blank = True, null = True,verbose_name='کد تایید پیامکی')
+    codeVarifySmsDate = models.DateTimeField(blank = True, null = True,verbose_name='زمان تایید پیامکی')
+
+#order.orderdetail_set.create(product_id=product.id, price=product.price ,count=count)
+    class Meta:
+        verbose_name = ' اطلاعات ارسال کد کاربران '
+        verbose_name_plural=' اطلاعات ارسال کد '
+
+    def __str__(self):
+        return self.user.get_full_name()

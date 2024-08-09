@@ -4,7 +4,7 @@
         <td>
             <div>
                 <a href="">{{ orderDetail.product.title }}</a>
-                <span class="error" v-if="orderDetail.error != ''"><p>{{orderDetail.error}}</p></span>
+                <span class="error" v-if="(orderDetail.error != '')&&(orderDetail.error != undefined)"><p>{{orderDetail.error}}</p></span>
                 <span v-else></span>
             </div>
         </td>
@@ -93,6 +93,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.orderDetail.error)
         this.number = this.toPersinaDigit((parseInt(this.orderDetail.count)).toString())
         this.price = (this.toPersinaDigit(parseInt(this.orderDetail.price).toString()));
     },
@@ -150,7 +151,6 @@ export default {
             await axios
                 .put('/order/update_for_buy/', formData)
                 .then(response => {
-
                     if( response.status == 200 ){
                         this.number = this.toPersinaDigit((parseInt(response.data.count)).toString());
                         this.price = (this.toPersinaDigit(parseInt(response.data.price).toString()));

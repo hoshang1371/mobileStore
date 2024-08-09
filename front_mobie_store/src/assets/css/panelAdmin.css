@@ -43,7 +43,7 @@
     display: flex;
     flex-direction: column;
 }
-.container_left div label{
+.container_left  div label{
     font-family: KalamehWeb_Bold;
     margin-left: 2rem;
 }
@@ -67,14 +67,32 @@
     font-family: KalamehWeb_Bold;
 }
 
+.container_left>form .notification{
+    flex-direction: column!important;
+}
 
-.container_left>div{
+.container_left>form .counterDown{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_left>form .counterDown p{
+    color: var(--green);
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: KalamehWeb_Bold; 
+}
+.container_left>form .timeFinish{
+    color: var(--orange)!important;
+}
+.container_left>form>div{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-.container_left>div>button{
+.container_left>form>div>button{
     display: inline-block;
     width: 50%;
     font-weight: 700;
@@ -90,11 +108,11 @@
     margin-bottom: 1rem; 
 }
 
-.container_left>div>button:focus {
+.container_left>form>div>button:focus {
     outline: none;
 }
 
-.container_left>div>button:hover {
+.container_left>form>div>button:hover {
     font-weight: 700;
     background-color: transparent;
     color: var(--black);

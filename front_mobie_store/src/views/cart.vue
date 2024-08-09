@@ -145,10 +145,12 @@ export default{
                             if (response.data[a].error != ""){
                                 ++this.errors;
                             }
+                            console.log("this.errors"+this.errors)
                             this.orderDetails[a].error = response.data[a].error
                             this.orderDetails[a].price = response.data[a].price
                             this.orderDetails[a].count = response.data[a].count
                         }
+                        this.$emit("orderDetails",this.orderDetails)
 
                         if(this.errors==0){
                             notify({
@@ -166,7 +168,7 @@ export default{
                     }
                     else{
                         notify({
-                            title: "تعداد صحیح نییست",
+                            title: "تعداد صحیح نیست",
                             type: "warn",
                         });    
                     }
@@ -194,6 +196,7 @@ export default{
                     }
                     this.persianTotalCount = this.toPersinaDigit(this.totalCount.toString())
                     this.persianTotalPrice = this.toPersinaDigit(this.totalPrice.toString())
+                    this.$emit("orderDetails",this.orderDetails)
         },
 
         toContinue(){

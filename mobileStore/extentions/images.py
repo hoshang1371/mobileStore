@@ -16,7 +16,8 @@ def make_thumbnail(dst_image_field, src_image_field, size, name_suffix, sep='_')
     """
     # create thumbnail image
     image = Image.open(src_image_field)
-    image.thumbnail(size, Image.ANTIALIAS)
+    # image.thumbnail(size, Image.ANTIALIAS)
+    image.thumbnail(size, Image.Resampling.LANCZOS) 
 
     # build file name for dst
     dst_path, dst_ext = os.path.splitext(src_image_field.name)

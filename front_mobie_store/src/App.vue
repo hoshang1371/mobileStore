@@ -44,6 +44,10 @@
 
                     <div class="nav__icons">
 
+                        <router-link to="/panelAdmin" class="icon__item" v-if="$store.state.isAuthenticated">
+                            <img src="./assets/icons/icons8-admin-64.png" alt="">
+                        </router-link>
+
                         <router-link to="/log-in" class="icon__item" v-if="!$store.state.isAuthenticated">
                             <img src="./assets/icons/login.png" alt="">
                         </router-link>
@@ -500,6 +504,7 @@ export default {
         //     console.log(e, "HIiiiiiiii");
         // },
         setOrderDetails(orderDetails){
+            console.log("kiiiiri")
             this.orderDetails = orderDetails
             this.totalCount = 0
             this.totalPrice = 0

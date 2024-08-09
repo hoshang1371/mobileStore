@@ -360,9 +360,13 @@ export default {
                     if( response.status == 200 ){
 
                         for(var a in response.data){
+
+                            if(this.orderDetails[a]==undefined){
+                                this.orderDetails.push(response.data[a])
+                            }
                             this.orderDetails[a].count = response.data[a].count
                         }
-
+                        this.$emit("orderDetails",this.orderDetails)
                         notify({
                                 title: "محصول به سبد خرید اضافه شد",
                                 type: "success",

@@ -215,6 +215,7 @@ class product_order_List_buy(UpdateAPIView):
             
             Total_price_for_each_product_buy = order_partial.price
             Total_price_for_all_product_buy = Total_price_for_all_product_buy + Total_price_for_each_product_buy
+
         Total_price_postPrice = Total_price_for_all_product_buy + post_price.price
         # print('count_all=',count_all);
         # print('Total_price_postPrice=',Total_price_postPrice);
