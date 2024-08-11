@@ -92,6 +92,10 @@
     justify-content: center;
     align-items: center;
 }
+.container_left>form .mt_1{
+    margin-top: 1rem;
+}
+
 .container_left>form>div>button{
     display: inline-block;
     width: 50%;

@@ -12,7 +12,7 @@
                     <div class="capcha">
                         <label>متن را وارد کنید<span>*</span></label>
                         <input v-model="inputValue" placeholder="متن را وارد کنید" class="" type="text" />
-                        <VueClientRecaptcha style="    flex-direction: row-reverse;" :value="inputValue" @getCode="getCaptchaCode" @isValid="checkValidCaptcha" />
+                        <VueClientRecaptcha style="flex-direction: row-reverse;" :value="inputValue" @getCode="getCaptchaCode" @isValid="checkValidCaptcha" />
                     </div>
     
                     <div class="acceptCode">

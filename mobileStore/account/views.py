@@ -9,11 +9,14 @@ from rest_framework.authtoken.models import Token
 from .models import User
 import datetime 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework import generics
 
 from extentions.sendSmsRandom import random_with_N_digits,sendSmsForVarifyAddress,sendSms
 # from django.contrib.auth.models import User
 from .models import UserCodeVarify
-from django.core.exceptions import ObjectDoesNotExist
+# from django.core.exceptions import ObjectDoesNotExist
+
+from .serializers import ChangePasswordSerializer
 # Create your views here.
 class finishActiveEmail(APIView):
     # def post(self, request, *args, **kwargs):
@@ -132,3 +135,32 @@ class setMobileNumber(APIView):
         return JsonResponse({
         "massege": "timeFin",
         })
+    
+class ChangePassword(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
+
+    def put(self, request):
+        u = Token.objects.get(pk=request.auth).user
+        user = User.objects.filter(email=u)[0]
+        password = request.data['password']
+        new_password = request.data['new_password']
+
+        if not user.check_password(raw_password=password):
+            return Response({'error': 'password not match'}, status=400)
+        else:
+            user.set_password(new_password)
+            user.save()
+            return Response({'success': 'password changed successfully'}, status=200)
+        
+
+        # password = request.data['password']
+        # new_password = request.data['new_password']
+
+        # obj = get_user_model().objects.get(pk=id)
+        # if not obj.check_password(raw_password=password):
+        #     return Response({'error': 'password not match'}, status=400)
+        # else:
+        #     obj.set_password(new_password)
+        #     obj.save()
+        #     return Response({'success': 'password changed successfully'}, status=200)

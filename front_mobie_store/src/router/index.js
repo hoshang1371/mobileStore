@@ -11,6 +11,7 @@ import Category from '../views/category.vue'
 import postInfo from '../views/postInfo.vue'
 import panelAdmin from '../views/panelAdmin.vue'
 import phoneNumberPanelAdmin from '../views/phoneNumberPanelAdmin.vue'
+import changePasswordPanelAdmin from '../views/changePasswordPanelAdmin.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -80,6 +81,11 @@ const routes = [
     path: '/phoneNumberPanelAdmin',
     name : 'phoneNumberPanelAdmin',
     component: phoneNumberPanelAdmin
+  },
+  {
+    path: '/changePasswordPanelAdmin',
+    name : 'changePasswordPanelAdmin',
+    component: changePasswordPanelAdmin
   },
   {
     path: '/about',
