@@ -3,7 +3,11 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from .models import CustomerComment, Product, ProductGallery,Rating,Likes, LikesCustomerComment
-from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, LikesCustomerCommentSerializer, PostCustomerCommentSerializer, ProductDetailProductGallerySerializer, ProductDitailSerializer, ProductSerializer,StarSerializer,LikeSerializer
+from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSerializer, \
+                            LikesCustomerCommentSerializer, PostCustomerCommentSerializer, \
+                            ProductDetailProductGallerySerializer, ProductDitailSerializer,\
+                            ProductSerializer,StarSerializer,LikeSerializer,\
+                            AllProductCustomerCommentSerializer
 from rest_framework.response import Response
 from django.db.models import Q
 from django.http import Http404
@@ -25,6 +29,7 @@ from rest_framework.generics import ListAPIView,ListCreateAPIView,RetrieveAPIVie
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+# from account.models import User
 
 class LatestProductsList(APIView):
     def get(self, request, format=None):
@@ -276,6 +281,27 @@ class CustomerCommentClass(ListCreateAPIView):
         return Response(serializer.data)
 
 
+class AllProductCustomerCommentClass(ListCreateAPIView):
+# class CustomerCommentClass(RetrieveAPIView):
+    queryset = CustomerComment.objects.all()
+    serializer_class = AllProductCustomerCommentSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get(self, request, *args, **kwargs):
+        u = Token.objects.get(pk=request.auth).user
+        print(u)
+        # user = User.objects.filter(email=u)[0]
+        comments = CustomerComment.objects.get_queryset().filter(
+            user=u,
+            ).order_by('-created')
+        serializer = AllProductCustomerCommentSerializer(comments, many=True)
+        print(comments)
+        # print(serializer)
+        return Response(serializer.data)
+        # return Response({'success': 'password changed successfully'}, status=200)
+
+
+
 class DeleteCustomerComment(DestroyAPIView):
     queryset = CustomerComment.objects.all()
     serializer_class = DeleteCustomerCommentSerializer
@@ -289,10 +315,10 @@ class PostCustomerComment(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = Token.objects.get(pk=request.auth).user
-        print(f"user={user}")
-        print(request.data["text"])
-        print(request.data["product"])
-        print(request.data["parent"])
+        # print(f"user={user}")
+        # print(request.data["text"])
+        # print(request.data["product"])
+        # print(request.data["parent"])
 
 
 

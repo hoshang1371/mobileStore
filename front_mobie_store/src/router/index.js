@@ -12,6 +12,7 @@ import postInfo from '../views/postInfo.vue'
 import panelAdmin from '../views/panelAdmin.vue'
 import phoneNumberPanelAdmin from '../views/phoneNumberPanelAdmin.vue'
 import changePasswordPanelAdmin from '../views/changePasswordPanelAdmin.vue'
+import CommentsPanelAdmin from '../views/CommentsPanelAdmin.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -86,6 +87,11 @@ const routes = [
     path: '/changePasswordPanelAdmin',
     name : 'changePasswordPanelAdmin',
     component: changePasswordPanelAdmin
+  },
+  {
+    path: '/CommentsPanelAdmin',
+    name : 'CommentsPanelAdmin',
+    component: CommentsPanelAdmin
   },
   {
     path: '/about',

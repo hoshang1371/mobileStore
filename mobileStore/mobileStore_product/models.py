@@ -266,6 +266,9 @@ class CustomerComment(models.Model):
         isLiked =LikesCustomerComment.objects.filter(CustomerComment_id=self.id,CustomerComment__CommentProduct_id=self.CommentProduct.id,likes=True).count()
         return(convert_numbers.english_to_persian(str(int(isLiked))))
     
+    # def get_absolute_url(self):
+    #     return f"/products/"
+    
         # return f"{now-self.updated}".replace("days", "روز")
 
         # Date = str(now-self.updated).split('.')

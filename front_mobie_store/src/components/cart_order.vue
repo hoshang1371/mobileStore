@@ -3,7 +3,7 @@
         <td><img :src="orderDetail.product.get_thumbnail" alt=""></td>
         <td>
             <div>
-                <a href="">{{ orderDetail.product.title }}</a>
+                <a @click="toProductDitails(orderDetail.product.get_absolute_url)">{{ orderDetail.product.title }}</a>
                 <span class="error" v-if="(orderDetail.error != '')&&(orderDetail.error != undefined)"><p>{{orderDetail.error}}</p></span>
                 <span v-else></span>
             </div>
@@ -111,6 +111,9 @@ export default {
 
     },
     methods: {
+        toProductDitails(link) {           
+            this.$router.push(link)
+        },
         conectToOrderDetails(k){
 
             this.orderDetail.count =this.toEnglishDigit(this.number);

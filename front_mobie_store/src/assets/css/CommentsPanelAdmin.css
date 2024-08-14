@@ -1,0 +1,48 @@
+
+.container_left>table>tr>th,
+.container_left>a
+{
+    font-weight: 700;
+    font-family: KalamehWeb_Bold;
+    direction: rtl;
+    margin: 2rem;
+}
+.container_left table{
+    width: calc(100% - 8rem);
+    direction: rtl;
+    border-collapse: collapse;
+    margin: 4rem;
+}
+.container_left table tr:first-child{
+    height: 5rem;
+    /* border-bottom: 1px solid var(--secondaryColor); */
+}
+
+.container_left table tr
+{
+    border-bottom: 1px solid var(--secondaryColor)!important;
+}
+.container_left>table>tr>td>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container_left>table>tr{
+   height: 12rem;
+   border-bottom: 1px solid var(--primaryColor)
+}
+.container_left>table>tr>td>div>a
+{
+    font-family: KalamehWeb_Regular;
+    font-size: 2rem;
+    transition: color .3s ease-in-out;
+    cursor: pointer;
+}
+.container_left>table>tr>td>div>h3{
+    font-family: KalamehWeb_Regular;
+    font-size: 2rem;
+}
+
+.container_left>table>tr>td>div>a:hover{
+    color: var(--orange);
+}

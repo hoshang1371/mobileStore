@@ -42,7 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "code",
-            "get_absolute_url",
+            # "get_absolute_url",
             "description",
             "smallDescription",
             "price",
@@ -96,7 +96,7 @@ class ProductDitailSerializer(serializers.ModelSerializer):
             "title",
             "code",
             "number",
-            "get_absolute_url",
+            # "get_absolute_url",
             "description",
             "smallDescription",
             "price",
@@ -155,7 +155,34 @@ class DeleteCustomerCommentSerializer(serializers.ModelSerializer):
         "id",
         )
 
+class AllProductCustomerCommentSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source="user.username", read_only=True)
+    CommentProduct = ProductDitailSerializer()
+    class Meta:
+        time_calc = serializers.CharField(source='time_calc')
+        like_comment_calc = serializers.CharField(source='like_comment_calc')
+        # is_liked = serializers.CharField(source='is_liked')
+        model = CustomerComment
+        fields = (
+            "id",
+            "CommentProduct",
+            "user",
+            "text",
+            "created",
+            "updated",
+            "time_calc",
+            "like_comment_calc",
+            # "parent",
+            "is_ok",
+            "replies",
+        )
+        depth = 1
+        # fields = '__all__'
 
+    # def get_fields(self):
+    #     fields = super(AllProductCustomerCommentSerializer, self).get_fields()
+    #     fields['replies'] = AllProductCustomerCommentSerializer(many=True, read_only=True)
+    #     return fields
 
 
 

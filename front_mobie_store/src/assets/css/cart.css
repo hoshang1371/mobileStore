@@ -52,6 +52,9 @@
     align-items: center;
     flex-direction: column;
 }
+.order table tr td div a{
+    cursor: pointer;
+}
 .order table tr td img{
     height: 8rem;
     width: 8rem;

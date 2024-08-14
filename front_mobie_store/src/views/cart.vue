@@ -20,7 +20,7 @@
                 v-bind:key="orderDetail.id" v-bind:orderDetail="orderDetail"
                 />
 
-            </table>
+        </table>
             <div class="update">
                 <button @click="sendOrderDetails()">به روز رسانی</button>
             </div>
