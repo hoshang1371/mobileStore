@@ -19,6 +19,7 @@ urlpatterns = [
     path('DeleteCustomerComment/<int:pk>/',views.DeleteCustomerComment.as_view()),
     path('PostCustomerComment/',views.PostCustomerComment.as_view()),
     path('GetAllProductCustomerComment/',views.AllProductCustomerCommentClass.as_view()),
+    path('LikeStarPanelAdminClass/',views.LikeStarPanelAdminClass.as_view()),
 
     path("products/search/", views.search),
 

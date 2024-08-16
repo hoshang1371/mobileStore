@@ -7,7 +7,7 @@ from .serializers import CustomerCommentSerializer, DeleteCustomerCommentSeriali
                             LikesCustomerCommentSerializer, PostCustomerCommentSerializer, \
                             ProductDetailProductGallerySerializer, ProductDitailSerializer,\
                             ProductSerializer,StarSerializer,LikeSerializer,\
-                            AllProductCustomerCommentSerializer
+                            AllProductCustomerCommentSerializer,LikeSerializerPanelAdmin
 from rest_framework.response import Response
 from django.db.models import Q
 from django.http import Http404
@@ -295,8 +295,6 @@ class AllProductCustomerCommentClass(ListCreateAPIView):
             user=u,
             ).order_by('-created')
         serializer = AllProductCustomerCommentSerializer(comments, many=True)
-        print(comments)
-        # print(serializer)
         return Response(serializer.data)
         # return Response({'success': 'password changed successfully'}, status=200)
 
@@ -315,12 +313,6 @@ class PostCustomerComment(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = Token.objects.get(pk=request.auth).user
-        # print(f"user={user}")
-        # print(request.data["text"])
-        # print(request.data["product"])
-        # print(request.data["parent"])
-
-
 
         comments = CustomerComment.objects.create(
             user_id= user.pk,
@@ -329,10 +321,28 @@ class PostCustomerComment(CreateAPIView):
             is_ok=False,
             parent_id=request.data["parent"],
         )
+        
         return Response({
             "ok":"ok"
         })
-    
+class LikeStarPanelAdminClass(ListCreateAPIView):
+    queryset = Likes.objects.all()
+    serializer_class = LikeSerializerPanelAdmin
+    permission_classes = (IsAuthenticatedOrReadOnly,) 
+    # permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        u = Token.objects.get(pk=request.auth).user
+        # print(u)
+        liked = Likes.objects.get_queryset().filter(
+            user=u,
+            )
+        # print(liked)
+        serializer = LikeSerializerPanelAdmin(liked, many=True)
+        return Response(serializer.data)
+        # return Response({
+        #     "like" : "ok",
+        # })
 
 @api_view(['POST'])
 def search(request):
@@ -346,4 +356,7 @@ def search(request):
         return Response(serializer.data)
     else:
          return Response({"products":[]})
+    
+
+
     

@@ -63,10 +63,7 @@ export default{
                 .then(response => {
                     this.$store.commit('setIsLoading', true)
                     this.comments = response.data
-                    // console.log(this.comments)
-                    for(let a in this.comments){
-                        console.log(this.comments[a].CommentProduct.title)
-                    }
+
                     // if(response.status == 200){
                     //     notify({
                     //     title: " رمز عبور تغییر کرد ",

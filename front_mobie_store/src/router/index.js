@@ -13,6 +13,8 @@ import panelAdmin from '../views/panelAdmin.vue'
 import phoneNumberPanelAdmin from '../views/phoneNumberPanelAdmin.vue'
 import changePasswordPanelAdmin from '../views/changePasswordPanelAdmin.vue'
 import CommentsPanelAdmin from '../views/CommentsPanelAdmin.vue'
+import LikedPanelAdmin from '../views/LikedPanelAdmin.vue'
+import HistoryPanelAdmin from '../views/HistoryPanelAdmin.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -92,6 +94,16 @@ const routes = [
     path: '/CommentsPanelAdmin',
     name : 'CommentsPanelAdmin',
     component: CommentsPanelAdmin
+  },
+  {
+    path: '/LikedPanelAdmin',
+    name : 'LikedPanelAdmin',
+    component: LikedPanelAdmin
+  },
+  {
+    path: '/HistoryPanelAdmin',
+    name : 'HistoryPanelAdmin',
+    component: HistoryPanelAdmin
   },
   {
     path: '/about',

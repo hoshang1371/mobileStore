@@ -28,15 +28,18 @@ class product_order(ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         user = Token.objects.get(pk=request.auth).user
-        order = Order.objects.filter(owner=user,is_paid=False).first()
+        order = Order.objects.filter(owner=user,is_paid=False)
 
 
         # orderDetails =order.first().orderdetail_set.all()
         # serializer = OrderProductSerializer(orderDetails, many=True)
         # return Response(serializer.data)
+        if not order.exists():
+            Order.objects.create(owner=user)
+            order = Order.objects.filter(owner=user,is_paid=False)
 
 
-        orderDetails =order.orderdetail_set.all()
+        orderDetails =order.first().orderdetail_set.all()
         serializer = OrderProductSerializer(orderDetails, many=True)
         return Response(serializer.data)
 
@@ -45,7 +48,10 @@ class product_order(ListCreateAPIView):
         order = Order.objects.filter(owner=user,is_paid=False)
         
         if not order.exists():
-            order =  Order.objects.create(owner=user)
+            Order.objects.create(owner=user)
+            order = Order.objects.filter(owner=user,is_paid=False)
+
+        
 
         print("===========================================")
         print(order)

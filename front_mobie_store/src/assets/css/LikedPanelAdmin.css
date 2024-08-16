@@ -1,0 +1,17 @@
+
+
+.productList{
+    padding: 2rem 2rem;
+    display: grid!important;
+    grid-template-columns: auto auto auto;
+    width: 100%;
+    height: auto;
+}
+.product{
+    margin: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .productList{
+        grid-template-columns: auto auto;
+    }}

@@ -24,6 +24,7 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class LikesCustomerCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LikesCustomerComment
@@ -221,3 +222,10 @@ class PostCustomerCommentSerializer(serializers.ModelSerializer):
         "text",
         "CommentProduct",
         )
+    
+class LikeSerializerPanelAdmin(serializers.ModelSerializer):
+    product = ProductDitailSerializer()
+    class Meta:
+        model = Likes
+        fields = '__all__'
+        depth =2
