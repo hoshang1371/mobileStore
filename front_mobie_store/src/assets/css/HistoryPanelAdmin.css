@@ -1,0 +1,10 @@
+
+
+.container_left table tr td a
+{
+    display: block;
+    text-align: center;
+    width: 100%;
+    font-family: KalamehWeb_Regular;
+    font-size: 2rem;
+}

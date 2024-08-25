@@ -28,8 +28,10 @@ class Order(models.Model):
         verbose_name = 'سبد خرید'
         verbose_name_plural = 'سبد های خرید کاربران'
 
+    # def __str__(self):
+    #     return self.owner.get_full_name()
     def __str__(self):
-        return self.owner.get_full_name()
+        return str(self.id)
 
 
 

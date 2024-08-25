@@ -5,7 +5,8 @@ from mobileStore_product.models import Product
 
 from .models import Order,OrderDetail
 
-from .serializer import OrderProductSerializer,DeleteOrderDetailSerializer, OrderProductSerializerForListOfbuy
+from .serializer import OrderProductSerializer,DeleteOrderDetailSerializer, \
+                        OrderProductSerializerForListOfbuy,AllOrderProductSerializer
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.authtoken.models import Token
@@ -239,3 +240,7 @@ class product_order_List_buy(UpdateAPIView):
 
         return JsonResponse(response, safe=False)
 
+class All_product_order(ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = AllOrderProductSerializer
+    permission_classes = (IsAuthenticated,)
