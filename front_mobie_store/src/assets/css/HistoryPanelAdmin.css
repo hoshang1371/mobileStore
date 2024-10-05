@@ -8,3 +8,14 @@
     font-family: KalamehWeb_Regular;
     font-size: 2rem;
 }
+.container_left table tr td:last-child{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 12rem;
+}
+.container_left table tr td:last-child a,
+.container_left table tr td:last-child svg
+{
+    cursor: pointer;
+}

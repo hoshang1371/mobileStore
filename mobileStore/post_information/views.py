@@ -1,5 +1,63 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.authtoken.models import Token
 
-# Create your views here.
+from mobileStore_order.models import Order
+
+from .serializer import PostAddressDetailSerializer,\
+                        PostAddressDetailSerializer_for_Peyment,\
+                        PaymentMethodeDetailSerializer,\
+                        PostAddressSerializer,\
+                        PaymentMethodeDetail
+                        # PostPriceSerializer 
+
+from .models import (
+                    # PostPrice,
+                    PostAddressDetail,
+                    PostAddress
+                    )
+
+from rest_framework.generics import (
+    ListAPIView,
+    ListCreateAPIView, 
+    # RetrieveAPIView, 
+    # RetrieveUpdateDestroyAPIView,
+    # DestroyAPIView,
+    # UpdateAPIView
+    )
+
+class PostAddressDetail_selected(ListCreateAPIView):
+    queryset = PostAddressDetail.objects.all()
+    serializer_class = PostAddressDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request,id, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        order = Order.objects.filter(owner=user,id=id)
+        print(order)
+        postAddressDetail = PostAddressDetail.objects.filter(OrderDetailSelected=order[0]).first()
+        print(postAddressDetail.PostPriceSelected.title)
+        print(postAddressDetail.PostPriceSelected.price)
+
+        return JsonResponse({
+                    "title": postAddressDetail.PostPriceSelected.title,
+                    "price": postAddressDetail.PostPriceSelected.price,
+                    }, safe=False)
+    
+class PostAddressDetail_peyment(ListAPIView):
+    queryset = PostAddressDetail.objects.all()
+    serializer_class = PostAddressDetailSerializer_for_Peyment
+    permission_classes = (IsAuthenticated,)
+
+class PaymentMethodeDetail_peyment(ListAPIView):
+    queryset = PaymentMethodeDetail.objects.all()
+    serializer_class = PaymentMethodeDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class PostAddress_get(ListAPIView):
+    queryset = PostAddress.objects.all()
+    serializer_class = PostAddressSerializer
+    permission_classes = (IsAuthenticated,)

@@ -71,6 +71,7 @@ urlpatterns = [
     path('founders/',include('mobileStore_Founders.urls')),
     path('',include('account.urls')),
     path('order/',include('mobileStore_order.urls')),
+    path('post_information/',include('post_information.urls')),
     # path('',include('mobileStore_Social.urls')),
     # path("api/", include("mobileStore_Social.urls")),
 ]

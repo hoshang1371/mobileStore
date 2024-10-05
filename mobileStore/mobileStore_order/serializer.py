@@ -5,7 +5,10 @@ from .models import OrderDetail,Order
 from mobileStore_product.serializers import ProductDitailSerializer
 from post_information.models import PaymentMethodeDetail,PostAddressDetail
 
-from post_information.serializer import PaymentMethodeDetailSerializer,PostAddressDetailSerializer
+from post_information.serializer import( 
+    PaymentMethodeDetailSerializer,
+    PostAddressDetailSerializer,
+    )
 
 #! Order  OrderProductSerializer
 class OrderProductSerializer(serializers.ModelSerializer):
@@ -47,6 +50,7 @@ class OrderDetilsFor_AllOrder(serializers.ModelSerializer):
         model = OrderDetail
         # fields = '__all__'
         fields = (
+                'id',
                 'count',
                 'price',
                 'get_detail_sum',

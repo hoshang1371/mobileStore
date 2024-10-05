@@ -15,6 +15,7 @@ import changePasswordPanelAdmin from '../views/changePasswordPanelAdmin.vue'
 import CommentsPanelAdmin from '../views/CommentsPanelAdmin.vue'
 import LikedPanelAdmin from '../views/LikedPanelAdmin.vue'
 import HistoryPanelAdmin from '../views/HistoryPanelAdmin.vue'
+import peymentPdf from '../views/peymentPdf.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -104,6 +105,11 @@ const routes = [
     path: '/HistoryPanelAdmin',
     name : 'HistoryPanelAdmin',
     component: HistoryPanelAdmin
+  },
+  {
+    path: '/peymentPdf/:peyment_id',
+    name : 'peymentPdf',
+    component: peymentPdf
   },
   {
     path: '/about',

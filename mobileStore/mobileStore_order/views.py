@@ -6,7 +6,8 @@ from mobileStore_product.models import Product
 from .models import Order,OrderDetail
 
 from .serializer import OrderProductSerializer,DeleteOrderDetailSerializer, \
-                        OrderProductSerializerForListOfbuy,AllOrderProductSerializer
+                        OrderProductSerializerForListOfbuy,AllOrderProductSerializer,\
+                        OrderDetilsFor_AllOrder
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.authtoken.models import Token
@@ -244,3 +245,18 @@ class All_product_order(ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = AllOrderProductSerializer
     permission_classes = (IsAuthenticated,)
+
+class product_order_by_id(ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderProductSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request,id, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        # order = Order.objects.filter(owner=user,is_paid=False)
+        order = Order.objects.filter(owner=user,id=id)
+        print(order)
+        orderDetails =order.first().orderdetail_set.all()
+        serializer = OrderProductSerializer(orderDetails, many=True)
+        # serializer = OrderDetilsFor_AllOrder(orderDetails, many=True)
+        return Response(serializer.data)
