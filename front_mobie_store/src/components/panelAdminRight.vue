@@ -1,7 +1,7 @@
 <template>
     <div class="container_right">
         <a href="">داشبورد</a>
-        <a href="">سفارشات پرداخت نشده</a>
+        <router-link to="/NoPayOrder"> سفارشات پرداخت نشده </router-link>
         <router-link to="/HistoryPanelAdmin"> تاریخچه سفارشات </router-link>
         <router-link to="/LikedPanelAdmin"> علاقه مندی ها </router-link>
         <router-link to="/CommentsPanelAdmin"> نظرات </router-link>

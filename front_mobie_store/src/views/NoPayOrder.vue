@@ -14,7 +14,7 @@
                         <th>شماره پیگیری</th>
                         <th>عملیات</th>
                     </tr>
-                    <tr v-for="hisOrd in historyOrder" :key="historyOrder.id">
+                    <tr v-for="hisOrd in NoPeyOrder" :key="NoPeyOrder.id">
                         <td>
                             <!-- <a>{{(hisOrd.id)}}</a> -->
                             <a>{{toPersinaDigit(hisOrd.id.toString())}}</a>
@@ -95,41 +95,32 @@ import mixin  from "../mixins.js"
 import axios from 'axios';
 import { useNotification } from "@kyvg/vue3-notification";
 
-
 const { notify } = useNotification()
-export default{
-    name:"HistoryPanelAdmin",
+export default {
+    name:"NoPayOrder",
     mixins: [ mixin ],
     components:{
         panelAdminRight,    
     },
     data() {
         return {
-            historyOrder : [],
-            statusOrder : [],
+            NoPeyOrder : [],
+            // statusOrder : [],
         }
     },
     mounted() {
         document.title = ' تاریخچه سفارشات ' + ' | موبایل'
         window.scroll(0, 0);
-        this.getHistoryPanelAdmin();
+        this.getNoPeyPanelAdmin();
     },
     methods: {
-        async getHistoryPanelAdmin() {
+        async getNoPeyPanelAdmin() {
             axios
-                .get("/order/All_product_order/")
+                .get("/order/NoPey_product_order/")
                 .then(response => {
                     this.$store.commit('setIsLoading', true)
-                    this.historyOrder = response.data
-                    // console.log(this.historyOrder)
-                    // console.log(this.historyOrder[0].PostAddressDetail[0].confirmedPayment)
-                    // console.log(typeof(this.historyOrder[0].PaymentMethode[0]))
-                    // if(response.status == 200){
-                    //     notify({
-                    //     title: " رمز عبور تغییر کرد ",
-                    //     type: "success",
-                    //     });
-                    // }
+                    this.NoPeyOrder = response.data
+                    console.log(this.NoPeyOrder)
                     this.$store.commit('setIsLoading', false)   
                 })
         },

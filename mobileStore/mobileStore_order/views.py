@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from django.http.response import HttpResponse, JsonResponse
 
 from rest_framework.generics import (
-    # ListAPIView,
+    ListAPIView,
     ListCreateAPIView, 
     # RetrieveAPIView, 
     # RetrieveUpdateDestroyAPIView,
@@ -245,6 +245,19 @@ class All_product_order(ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = AllOrderProductSerializer
     permission_classes = (IsAuthenticated,)
+    
+class NoPey_product_order(ListAPIView):
+    queryset = Order.objects.filter(is_paid=False)
+    serializer_class = AllOrderProductSerializer
+    permission_classes = (IsAuthenticated,)
+
+    # def get(self, request, *args, **kwargs):
+    #     queryset = Order.objects.filter(is_paid=False)
+    #     print(queryset)
+    #     return JsonResponse({
+    #                 "err": "no this count exist"
+    #         })
+
 
 class product_order_by_id(ListCreateAPIView):
     queryset = Order.objects.all()
