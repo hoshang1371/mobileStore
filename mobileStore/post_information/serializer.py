@@ -7,6 +7,8 @@ class PostAddressDetailSerializer(serializers.ModelSerializer):
         class Meta:
             model = PostAddressDetail
             fields = "__all__"
+            
+
 
 class PostAddressDetailSerializer_for_Peyment(serializers.ModelSerializer):
         
@@ -49,3 +51,9 @@ class PostAddressSerializer(serializers.ModelSerializer):
                   'address',
                 'post_code'
             )
+
+class PaymentMethodeDetailSerializer(serializers.ModelSerializer):
+        
+        class Meta:
+            model = PaymentMethodeDetail
+            fields = "__all__"

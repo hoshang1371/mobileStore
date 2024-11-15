@@ -23,7 +23,7 @@
             </div>
             <!-- @click.prevent -->
              <div>
-                 <button>ادامه</button>
+                 <button @click="checkHaveNumber()">ادامه</button>
              </div>
         </div>
 
@@ -33,7 +33,9 @@
 <script>
 import mixin  from "../mixins.js"
 import axios from 'axios'
+import { useNotification } from "@kyvg/vue3-notification";
 
+const { notify } = useNotification()
 export default{
     name: "postInfo",
     mixins: [ mixin ],
@@ -49,7 +51,8 @@ export default{
                 ostan:"خراسان جنوبی",
                 shahr:"بیرجند",
                 postCode: "",
-                address: ""
+                address: "",
+                isMobSet: false,
             }
 
         }
@@ -125,6 +128,52 @@ export default{
 
                 })
         },
+        async checkHaveNumber(){
+            this.$store.commit('setIsLoading', true)
+            await axios
+                .get("api/v1/checkMobileNumber/")
+                .then(response => {
+                    this.$store.commit('setIsLoading', false)
+                    // notify({
+                    //     title: "لطفا وارد حساب کاربری خود شوید",
+                    //     type: "warn",
+                    // });
+                    // console.log(this.formData.postCode)
+                    // console.log(this.formData.address)
+                    if((this.formData.postCode=="")|(this.formData.postCode=="NaN")){
+                        notify({
+                            title: " کد پستی را وارد کنید. ",
+                            type: "warn",
+                        });
+                    }
+                    if((this.formData.address=="")|(this.formData.address=="NaN")){
+                        notify({
+                            title: " آدرس را وارد کنید. ",
+                            type: "warn",
+                        });
+                    }
+                    if(
+                        (this.formData.address!="")&(this.formData.postCode!="")
+                        &(this.formData.address!="NaN")&(this.formData.postCode!="NaN")
+                    )
+                    {
+                        // console.log(typeof(response.data.isMobSet))
+                        this.isMobSet =response.data.isMobSet
+                        if(this.isMobSet == true){      
+                            console.log(this.isMobSet)
+                            this.$router.push("/peymentAndSendMethode")
+                        }
+                        else if(this.isMobSet == false){
+                            console.log((this.isMobSet))
+                            notify({
+                                title: " شماره تماس خود را تنظیم کنید. ",
+                                type: "warn",
+                            });
+                            this.$router.push("/phoneNumberPanelAdmin")
+                        }
+                    }
+                })
+        }
     },
 
 

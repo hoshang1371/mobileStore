@@ -504,7 +504,7 @@ export default {
         //     console.log(e, "HIiiiiiiii");
         // },
         setOrderDetails(orderDetails){
-            console.log("kiiiiri")
+            //console.log("kiiiiri")
             this.orderDetails = orderDetails
             this.totalCount = 0
             this.totalPrice = 0

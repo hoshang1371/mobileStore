@@ -61,3 +61,48 @@ class PostAddress_get(ListAPIView):
     queryset = PostAddress.objects.all()
     serializer_class = PostAddressSerializer
     permission_classes = (IsAuthenticated,)
+
+class peymentAndSendMethode(ListCreateAPIView):
+    queryset = PaymentMethodeDetail.objects.all()
+    serializer_class = PaymentMethodeDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = Token.objects.get(pk=request.auth).user
+        # print(user)
+        print(request.data)
+        req = request.data
+        Order_id = request.data['Order_id']
+        order = Order.objects.filter(owner=user,id=Order_id)
+        # print(request.data['send'])
+        # print(request.data['peyment'])
+        # print(request.data['rull'])
+        postAddressDetail = PostAddressDetail.objects.filter(OrderDetailSelected=order[0]).first()
+        postAddressDetail.carrierDetails = request.data['send']
+        postAddressDetail.save()
+        # print(postAddressDetail.carrierDetails)
+        #! age sakhte nashodebod
+        # paymentMethodeDetail = PaymentMethodeDetail.objects.get(OrderDetailSelected=order[0])
+        paymentMethodeDetail, created = PaymentMethodeDetail.objects.get_or_create(OrderDetailSelected=order[0])
+        paymentMethodeDetail.PaymentDetails=request.data['peyment']
+        paymentMethodeDetail.isTermsAndRules = request.data['rull']
+        paymentMethodeDetail.save()
+
+        if(paymentMethodeDetail.PaymentDetails == "ثبت سفارش (پیش فاکتور)"):
+            return JsonResponse({
+                    "code": "1",
+                    }, safe=False)
+        elif(paymentMethodeDetail.PaymentDetails == "پرداخت از طریق درگاه پرداخت اینترنتی"):
+                return JsonResponse({
+                    "code": "2",
+                    }, safe=False)
+        # print(paymentMethodeDetail.PaymentDetails) 
+        # print(paymentMethodeDetail.isTermsAndRules)
+
+
+
+
+        return JsonResponse({
+                    "title": "postAddressDetail.PostPriceSelected.title",
+                    "price": "postAddressDetail.PostPriceSelected.price",
+                    }, safe=False)

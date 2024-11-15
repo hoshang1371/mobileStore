@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/v1/sendCodeMobileNumber/',views.sendCodeMobileNumber.as_view()),
     path('api/v1/setMobileNumber/',views.setMobileNumber.as_view()),
     path('api/v1/change_password/',views.ChangePassword.as_view(), name='change_password'), 
+    path('api/v1/checkMobileNumber/',views.checkMobileNumber.as_view(), name='checkMobileNumber'), 
 
     ]

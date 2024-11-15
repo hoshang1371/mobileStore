@@ -17,6 +17,7 @@ import LikedPanelAdmin from '../views/LikedPanelAdmin.vue'
 import HistoryPanelAdmin from '../views/HistoryPanelAdmin.vue'
 import peymentPdf from '../views/peymentPdf.vue'
 import NoPayOrder from '../views/NoPayOrder.vue'
+import peymentAndSendMethode from '../views/peymentAndSendMethode.vue'
 
 import Cart from '../views/cart.vue'
 
@@ -111,6 +112,11 @@ const routes = [
     path: '/NoPayOrder',
     name : 'NoPayOrder',
     component: NoPayOrder
+  },
+  {
+    path: '/peymentAndSendMethode',
+    name : 'peymentAndSendMethode',
+    component: peymentAndSendMethode
   },
   {
     path: '/peymentPdf/:peyment_id',

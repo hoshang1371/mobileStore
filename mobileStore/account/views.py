@@ -164,3 +164,17 @@ class ChangePassword(generics.GenericAPIView):
         #     obj.set_password(new_password)
         #     obj.save()
         #     return Response({'success': 'password changed successfully'}, status=200)
+
+#! check for mobile Number
+class checkMobileNumber(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    # serializer_class = ChangePasswordSerializer
+
+    def get(self, request):
+        u = Token.objects.get(pk=request.auth).user
+        user = User.objects.filter(email=u)[0]
+        print(user.mobile_phone_number)
+        #None
+        if user.mobile_phone_number == None:
+            return Response({'isMobSet': False}, status=200)
+        return Response({'isMobSet': True}, status=200)
