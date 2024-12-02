@@ -120,23 +120,34 @@ export default{
         async send(){
             // console.log("ok")
             // console.log(this.orderDetails[0].order.id)
-            this.$store.commit('setIsLoading', true)
             this.formData.Order_id = this.orderDetails[0].order.id
-            console.log(this.formData)
-            await axios
-                .post('/post_information/peymentAndSendMethode', this.formData)
-                .then(response => {
-                    // console.log(response.status)
-                    console.log(response.data)
-                    //! toDO: edame be product list
-                    this.$store.commit('setIsLoading', false)
-                })
-                .catch((err) => {
-                    notify({
-                        title: "مشکلی بوجود امده است",
-                        type: "warn",
-                    });    
-                })
+            console.log(this.formData.rull)
+
+            if(this.formData.rull == false)
+                notify({
+                            title: "قوانین و مقررات موافقت نشده است",
+                            type: "warn",
+                        });   
+            else if(this.formData.rull == true)
+                this.$store.commit('setIsLoading', true)
+                await axios
+                    .post('/post_information/peymentAndSendMethode', this.formData)
+                    .then(response => {
+                        // console.log(response.status)
+                        console.log(response.data.code)
+                        if( response.data.code == 1){
+                            console.log("tamas")
+                            this.$router.push("/finishNoCartPeyment")
+                        }
+                        //! toDO: edame be product list
+                        this.$store.commit('setIsLoading', false)
+                    })
+                    .catch((err) => {
+                        notify({
+                            title: "مشکلی بوجود امده است",
+                            type: "warn",
+                        });    
+                    })
             // console.log(this.formData.send) 
             // console.log(this.formData.peyment)
             // console.log(this.formData.rull)

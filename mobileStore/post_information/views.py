@@ -87,7 +87,7 @@ class peymentAndSendMethode(ListCreateAPIView):
         paymentMethodeDetail.PaymentDetails=request.data['peyment']
         paymentMethodeDetail.isTermsAndRules = request.data['rull']
         paymentMethodeDetail.save()
-
+        
         if(paymentMethodeDetail.PaymentDetails == "ثبت سفارش (پیش فاکتور)"):
             return JsonResponse({
                     "code": "1",
